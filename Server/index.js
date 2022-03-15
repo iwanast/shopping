@@ -15,6 +15,19 @@ const app = express();
 const PORT = 7904; 
 app.use(express.json());
 
+app.use(
+  cors({origin: "http://localhost:3000"})
+  );
+
+app.get("/products", async (req, res) => {
+  const products = []
+  try{
+    products = await collectionProducts.find({}).toArray();
+  }catch (error){
+    console.log("Something went wrong when loading the products, bear with us")
+  }
+  return products; 
+});
 
 
 // Always at the bottom
