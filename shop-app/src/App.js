@@ -1,6 +1,6 @@
 import React from "react";
 import {Products} from "./pages";
-import {Router} from "./Router";
+
 import {Nav} from "./components";
 import './App.css';
 
@@ -11,7 +11,6 @@ function App() {
       <div>
         <Nav />
       </div>
-      {/* <Router /> */}
       <Products /> 
     </div>
   );
