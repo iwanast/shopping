@@ -14,20 +14,32 @@ const collectionOrder = db.collection("order");
 const app = express(); 
 const PORT = 7904; 
 app.use(express.json());
-
 app.use(
   cors({origin: "http://localhost:3000"})
   );
+app.use("/pictures", express.static("pictures"));
 
 app.get("/products", async (req, res) => {
-  const products = []
   try{
-    products = await collectionProducts.find({}).toArray();
+    const products = await collectionProducts.find({}).toArray();
+    console.log(products);
+    res.json(products); 
   }catch (error){
     console.log("Something went wrong when loading the products, bear with us")
+    res.sendStatus(500);
   }
-  return products; 
+  
 });
+
+app.post("/products", async (req, res) => {
+  const insertItem = req.body;
+  try{
+    await collectionProducts.insertOne(insertItem);
+    res.status(200).end();
+  } catch{
+    res.sendStatus(500)
+  }
+})
 
 
 // Always at the bottom
