@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(
   cors({origin: "http://localhost:3000"})
   );
-app.use("/pictures", express.static("pictures"));
+app.use(express.static("public"));
 
 app.get("/products", async (req, res) => {
   try{

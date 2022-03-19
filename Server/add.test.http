@@ -11,9 +11,9 @@ Content-Type: application/json
   "author": "Steve Smallmann",
   "price": 120,
   "picture": {
-    "frontpicture": "https://localhost:7904/pictures/Astromaus.jpg",
-    "firstSidepicture": "https://localhost:7904/pictures/Astromaus1.jpg",
-    "backpicture": "https://localhost:7904/pictures/Astromaus2.jpg"
+    "frontpicture": "http://localhost:7904/pictures/Astromaus.jpg",
+    "firstSidepicture": "http://localhost:7904/pictures/Astromaus1.jpg",
+    "backpicture": "http://localhost:7904/pictures/Astromaus2.jpg"
   },
   "currency": "SEK",
   "genre": "fiction",
