@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {Link, useLocation} from "react-router-dom";
 
 export const Item = () => {
@@ -10,27 +10,22 @@ console.log(location.state.product)
     <div> 
       <Link to={"/products"}>
       <button>
-          Back
+          Back to Products
         </button>
       </Link>
-      <h1>
-        Hello item works.
-      </h1>
-    </div>
-     /* <main id="main">
-       <ul>
-      {products.map((product) => (
-          <li key={product._id}>
-              <img src={product.picture.frontpicture} alt="Book-cover" />
+     <main id="main">
+          <div key={item._id}>
+              <img src={item.picture.front} alt="Book-cover" />
+              <img src={item.picture.first} alt="Book-cover" />
+              <img src={item.picture.back} alt="Book-cover" />
               <div className="single-post-wrapper__content">
-                <span>{product.author}</span>
-                <h3>{product.title}</h3>
-                <p>{product.description}</p>
-                <p>{product.price} {product.currency}</p>
+                <span>{item.author}</span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <p>{item.price} {item.currency}</p>
               </div>
-          </li>
-       ))}
-      </ul>
-    </main>  */
+          </div>
+    </main>
+    </div>
   )
 }
