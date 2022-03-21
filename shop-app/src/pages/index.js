@@ -1,2 +1,3 @@
-export {Products} from "./Products"
+export {Products} from "./Products";
 export {Admin} from "./Admin";
+export {Item} from "./Item";

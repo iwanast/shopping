@@ -9,6 +9,7 @@ const db = mongoClient.db("Project-data-interaction");
 const collectionProducts = db.collection("products");
 const collectionCard = db.collection("card");
 const collectionOrder = db.collection("order");
+const collectionUsers = db.collection("users");
 
 //API set-up
 const app = express(); 
@@ -35,6 +36,16 @@ app.post("/products", async (req, res) => {
   const insertItem = req.body;
   try{
     await collectionProducts.insertOne(insertItem);
+    res.status(200).end();
+  } catch{
+    res.sendStatus(500)
+  }
+})
+
+app.post("/users", async (req, res) => {
+  const insertUser = req.body;
+  try{
+    await collectionUsers.insertOne(insertUser);
     res.status(200).end();
   } catch{
     res.sendStatus(500)

@@ -2,7 +2,7 @@
 GET http://localhost:7904/products
 
 
-### POST
+### POST A PRODUCT
 POST http://localhost:7904/products
 Content-Type: application/json 
 
@@ -20,3 +20,21 @@ Content-Type: application/json
   "startage": 0,
   "quantity": 10 
 } 
+
+
+
+### POST A USER 
+POST http://localhost:7904/products
+Content-Type: application/json 
+
+{
+    "_id": "alessia.zapalotti@gmail.com",
+"shippingAdress": {
+  "street": "Treegreen 8",
+  "postalCode": 1010,
+  "city": "Waterland",
+  "country": "Seeweedy",
+  "datestamp": "Wed Mar 19 2022 18:03:09 GMT-0500 (EST)"
+  },
+"role": "customer"  
+}
