@@ -20,16 +20,29 @@ app.use(
   );
 app.use(express.static("public"));
 
+
 app.get("/products", async (req, res) => {
+
+  const {author, title} = req.query
+  const filter = [];
+  if(author){
+    filter.push({ author: { $regex: new RegExp(author, "i")}});
+  }
+  if(title){
+    filter.push({title: { $regex: new RegExp(title, "i")}});
+  }
+  const terms = (author === undefined && title === undefined ? {} : {$or: filter })
+
   try{
-    const products = await collectionProducts.find({}).toArray();
-    console.log(products);
+    console.log("Terms after:", terms)
+    const products = await collectionProducts.find(terms).toArray();
+    console.log(filter);
     res.json(products); 
   }catch (error){
+    console.log("Terms i catch:", terms)
     console.log("Something went wrong when loading the products, bear with us")
     res.sendStatus(500);
   }
-  
 });
 
 app.post("/products", async (req, res) => {
