@@ -17,13 +17,11 @@ export const Products = () => {
 
   return(
     <main id="main">
-      <ul>
+      <ul className="outer-wrapper-products">
        {products.map((product) => (
-          <li key={product._id}>
-            {/* <Link to={`/item/${product._id}/${{product.author)}/${encodeURIComponent(product.picture.frontpicture)}/${broadcast.title}`}>
- */}
-<Link to={"/item"} state={{product}} >
-              <img src={product.picture.front} alt="Book-cover" />
+          <li key={product._id} className="wrapper-product">
+            <Link to={"/item"} state={{product}} >
+              <img src={product.picture[0]} alt="Book-cover" />
               <div className="single-post-wrapper__content">
                 <span>{product.author}</span>
                 <h3>{product.title}</h3>
@@ -31,7 +29,6 @@ export const Products = () => {
                 <p>{product.price} {product.currency}</p>
               </div>
               </Link>
-            {/* </Link> */}
           </li>
        ))}
       </ul>
