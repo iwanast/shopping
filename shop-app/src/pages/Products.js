@@ -1,19 +1,26 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom"
 
-export const Products = () => {
-
+export const Products = (props) => {
   const [products, setProducts] = useState([]);
+  console.log(props);
 
-  useEffect(() => {
-    fetch("http://localhost:7904/products")
-      .then((data) => data.json())
-      .then((result) => {
-        console.log(result)
-        !result[0] ? alert("Det finns inga produkter att visas för tillfället")
-        : setProducts(result);
-        console.log(result)})
-  }, []);
+  if(!props.result){ 
+    useEffect(() => {
+      fetch("http://localhost:7904/products")
+        .then((data) => data.json())
+        .then((result) => {
+          console.log(result)
+          !result[0] ? alert("Det finns inga produkter att visas för tillfället")
+          : setProducts(result);
+          console.log(result)})
+    }, []);
+  } else{
+    setProducts(props);
+  }
+  
+
+ 
 
   return(
     <main id="main">

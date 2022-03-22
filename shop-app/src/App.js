@@ -1,5 +1,5 @@
 import React from "react";
-import {Products} from "./pages";
+// import {Products} from "./pages";
 import {Router} from "./Router";
 import {Nav} from "./components";
 import './App.css';

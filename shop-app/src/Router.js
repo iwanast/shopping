@@ -1,6 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom"
-import App from './App';
+import { Routes, Route } from "react-router-dom";
 import { Products, Admin, Item } from "./pages";
 
 export const Router = () => {

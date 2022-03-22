@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Link, useLocation} from "react-router-dom";
+import React, { useState} from "react";
+import {useLocation} from "react-router-dom";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import './Item.css';
 
