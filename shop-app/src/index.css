@@ -5,8 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  list-style: none;
-  text-decoration: none;
+  background-color: rgb(233, 232, 232);
+  /* list-style: none;
+  text-decoration: none; */
 }
 
 code {
@@ -36,28 +37,14 @@ ul{
   color: white;
   margin: 16px;
 }
-#item{
-  text-decoration: none;
-  display: inline-block;
-  width: 300px;
-  padding: 8px 16px;
-  background-color: rgb(99, 120, 179);
-  border-radius: 10px;
-  color: white;
-  margin: 16px;
-}
 
 .wrapper-product img{
   width: 220px;
   object-fit: scale-down;
   
 }
-.wrapper-product{
+ .wrapper-product{
   width: 300px;
   display: flex; 
   align-content: space-between;
-}
-.wrapper-button-picture-slide{
-  display: flex;
-  justify-content: space-between;
 }

@@ -25,7 +25,6 @@ export const Products = () => {
               <div className="single-post-wrapper__content">
                 <span>{product.author}</span>
                 <h3>{product.title}</h3>
-                <p>{product.description}</p>
                 <p>{product.price} {product.currency}</p>
               </div>
               </Link>

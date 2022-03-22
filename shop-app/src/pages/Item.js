@@ -19,11 +19,6 @@ export const Item = () => {
 
   return(
     <div> 
-      <Link to={"/products"}>
-        <button>
-          Back to Products
-        </button>
-      </Link>
      <main id="main">
         <div key={item._id} className="wrapper-item">
           <img src={images[currentImageIndex]} alt="Book-cover" />

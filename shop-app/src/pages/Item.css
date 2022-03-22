@@ -1,22 +1,23 @@
 .wrapper-item{
   text-decoration: none;
   display: inline-block;
-  width: 500px;
+  width: 400px;
   padding: 8px 16px;
   background-color: rgb(99, 120, 179);
   border-radius: 10px;
   color: white;
-  margin: 16px;
+  margin: auto;
 }
 
 .wrapper-item img{
-  width: 480px;
+  width: 380px;
+  padding: 8px;
   object-fit: scale-down;
   
 }
 
 .wrapper-button-picture-slide{
-  padding: 16px;
+  padding: 8px;
   display: flex;
   justify-content: center;
 }
