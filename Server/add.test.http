@@ -45,3 +45,20 @@ Content-Type: application/json
   },
 "role": "customer"  
 }
+
+### POST AN ARTICLE IN THE CART
+POST http://localhost:7904/shopping-cart
+Content-Type: application/json 
+
+{
+  "customersId": "guest",
+  "article": {  
+    "articleId": {"TOBEINSERTEDFROMTHEOBJEC OR STRING?"},
+    "title": "Marsupilami - Die Schmetterlingsjäger",
+    "author": "Franquin Batem & Yann",
+    "price": 200,
+    "picture": "http://localhost:7904/pictures/Marsupilami24_0.jpg",
+    "currency": "SEK"},
+  "quantity": 2,
+  "datestamp": "Wed Mar 23 2022 18:03:09 GMT-0500 (EST)"
+} 

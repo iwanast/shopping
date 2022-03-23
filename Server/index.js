@@ -7,7 +7,7 @@ const mongoClient = new mongodb.MongoClient("mongodb://localhost:27017");
 mongoClient.connect();
 const db = mongoClient.db("Project-data-interaction");
 const collectionProducts = db.collection("products");
-const collectionCard = db.collection("card");
+const collectionCart = db.collection("shopping-cart");
 const collectionOrder = db.collection("order");
 const collectionUsers = db.collection("users");
 
@@ -35,11 +35,20 @@ app.get("/products", async (req, res) => {
 
   try{
     const products = await collectionProducts.find(terms).toArray();
-    console.log(filter);
     res.json(products); 
   }catch (error){
     console.log("Something went wrong when loading the products, bear with us")
-    res.sendStatus(500);
+    res.sendStatus(error);
+  }
+});
+
+app.get("/shopping-cart", async (req, res) =>{
+  try{
+    const cartItems = await collectionCart.find({}).toArray();
+    res.json(cartItems);
+  }catch (error){
+    console.log("Something went wrong when loading the products, bear with us")
+    res.sendStatus(error);
   }
 });
 
@@ -62,6 +71,17 @@ app.post("/users", async (req, res) => {
     res.sendStatus(500)
   }
 })
+
+app.post("/shopping-cart", async (req, res) => {
+  const insertArticle = req.body;
+  try{
+    await collectionCart.insertOne(insertArticle);
+    res.status(200).end();
+  } catch{
+    res.sendStatus(500)
+  }
+})
+
 
 
 // Always at the bottom
