@@ -30,7 +30,7 @@ export const Products = ({allProduct}) => {
           <li key={product._id} className="wrapper-product">
             <Link to={"/item"} state={{product}} >
               <img src={product.picture[0]} alt="Book-cover" />
-              <div className="single-post-wrapper__content">
+              <div>
                 <span>{product.author}</span>
                 <h3>{product.title}</h3>
                 <p>{product.price} {product.currency}</p>
