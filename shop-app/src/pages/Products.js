@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
 
-export const Products = (props) => {
+import {Search} from "../components";
+
+export const Products = ({allProduct}) => {
   const [products, setProducts] = useState([]);
-  console.log(props);
-
-  if(!props.result){ 
+   
     useEffect(() => {
       fetch("http://localhost:7904/products")
         .then((data) => data.json())
@@ -14,15 +14,16 @@ export const Products = (props) => {
           !result[0] ? alert("Det finns inga produkter att visas för tillfället")
           : setProducts(result);
           console.log(result)})
-    }, []);
-  } else{
-    setProducts(props);
-  }
-  
+    }, [allProduct]);
 
- 
+
+    console.log("SELECTED ALL PRODUCT?: ", allProduct)
 
   return(
+    <>
+    <section>
+      <Search onSelectedChange={setProducts} />
+    </section>
     <main id="main">
       <ul className="outer-wrapper-products">
        {products.map((product) => (
@@ -39,5 +40,6 @@ export const Products = (props) => {
        ))}
       </ul>
     </main>
+    </>
   ) 
 };

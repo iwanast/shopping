@@ -1,20 +1,19 @@
-import React from "react";
-// import {Products} from "./pages";
+import React, {useState} from "react";
+import {Products} from "./pages";
 import {Router} from "./Router";
 import {Nav} from "./components";
 import './App.css';
 
-function App() {
+export const App = () => {
+  const [allProduct, setAllProduct] = useState(0);
   return (
     <div className="App">
       <h1>Your secondhand literatur shop</h1>
       <div>
-        <Nav />
-        <Router />
+        <Nav onSelectedAllProduct={setAllProduct} allProduct={allProduct} />
+        <Router allProduct={allProduct} />
       </div>
       {/* <Products />  */}
     </div>
   );
 }
-
-export default App;

@@ -1,15 +1,16 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Products, Admin, Item } from "./pages";
+import {App} from "./App";
 
-export const Router = () => {
+export const Router = ({allProduct}) => {
   return(
     <Routes>
       {/* <Route path="/" element={<App /> } /> */}
         {/* <Route path=":ageParam" element={<App /> } />
         <Route path="" element={<App /> } /> 
       </Route>*/}
-      <Route path="/" element={<Products /> } />
+      <Route path="/" element={<Products allProduct={allProduct}/> } />
       <Route path="/item" element={<Item />} />
       <Route path="/admin" element={<Admin /> } />
       {/* <Route path="/audioplay/:id/:url/:imageurl/:title/:ageParam" element={<PlayEpisode /> } /> */}
