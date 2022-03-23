@@ -11,15 +11,27 @@
   color: rgb(32, 32, 32);
 }
 .wrapper-cart-article{
-  
   display: flex;
   justify-content: flex-start;
-
-
 }
 
 .wrapper-cart-article img{
   width: 40px;
   height: 40px;
   object-fit: scale-down;
+}
+
+.table-bordered{
+  margin: 16px;
+  padding: 8px;
+  border-radius: 3px;
+  background-color: aliceblue;
+}
+
+tbody{
+  margin: 16px;
+  padding: 8px 16px;
+  background-color: rgb(223, 208, 195);
+  border-radius: 10px;
+  border: solid 1px rgb(179, 107, 0);
 }

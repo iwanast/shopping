@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from "react";
+import {IoSearchSharp} from "react-icons/io5"
+
 import "./Search.css";
 export const Search = ({onSelectedChange}) => {
   
@@ -29,7 +31,7 @@ export const Search = ({onSelectedChange}) => {
     <div className="ui form">
       <div className="field">
         <label>
-          Search after a title or author: 
+          <IoSearchSharp/>
         </label>
         <input className="input-search" type="text"
           onChange={e=> setTerm(e.target.value)}>
