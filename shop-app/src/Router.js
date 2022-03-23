@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Products, Admin, Item } from "./pages";
-import {App} from "./App";
+import { Products, Admin, Item, Cart } from "./pages";
 
 export const Router = ({allProduct}) => {
   return(
@@ -13,6 +12,7 @@ export const Router = ({allProduct}) => {
       <Route path="/" element={<Products allProduct={allProduct}/> } />
       <Route path="/item" element={<Item />} />
       <Route path="/admin" element={<Admin /> } />
+      <Route path="/cart" element={<Cart /> } />
       {/* <Route path="/audioplay/:id/:url/:imageurl/:title/:ageParam" element={<PlayEpisode /> } /> */}
       <Route 
         path="*" 

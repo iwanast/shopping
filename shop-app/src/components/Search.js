@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-
+import "./Search.css";
 export const Search = ({onSelectedChange}) => {
   
   const [term, setTerm] = useState("");
@@ -29,9 +29,9 @@ export const Search = ({onSelectedChange}) => {
     <div className="ui form">
       <div className="field">
         <label>
-          Enter a title or author 
+          Search after a title or author: 
         </label>
-        <input
+        <input className="input-search" type="text"
           onChange={e=> setTerm(e.target.value)}>
         </input>
       </div>

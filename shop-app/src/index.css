@@ -5,7 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(233, 232, 232);
+  background-color: rgb(231, 236, 248);
+  color: rgb(32, 32, 32)
   /* list-style: none;
   text-decoration: none; */
 }
@@ -32,15 +33,18 @@ ul{
   width: 290px;
   height: 400px;
   padding: 8px 16px;
-  background-color: rgb(99, 120, 179);
+  background-color: rgb(223, 208, 195);
   border-radius: 10px;
-  color: white;
+  border: solid 1px rgb(179, 107, 0);
+  color: rgb(32, 32, 32);
   margin: 16px;
 }
 
 .wrapper-product img{
+  padding-top: 12px;
   width: 220px;
   object-fit: scale-down;
+  height: 250px;
   
 }
  .wrapper-product{

@@ -34,12 +34,10 @@ app.get("/products", async (req, res) => {
   const terms = (author === undefined && title === undefined ? {} : {$or: filter })
 
   try{
-    console.log("Terms after:", terms)
     const products = await collectionProducts.find(terms).toArray();
     console.log(filter);
     res.json(products); 
   }catch (error){
-    console.log("Terms i catch:", terms)
     console.log("Something went wrong when loading the products, bear with us")
     res.sendStatus(500);
   }
@@ -68,5 +66,5 @@ app.post("/users", async (req, res) => {
 
 // Always at the bottom
 app.listen(PORT, () => {
-  console.log("Is listening on port 7904")
+  console.log("Is listening on port ", PORT)
 });

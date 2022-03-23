@@ -1,3 +1,24 @@
 .App {
   text-align: center;
 }
+header {
+  display: flex;
+  justify-content:space-between;
+  flex-wrap: wrap;
+}
+.header-title{
+  background-color: aliceblue;
+  margin: 20px;
+  border-radius: 3px;
+  height: 40px;
+  padding: 16px;
+  text-align: center;
+}
+h1{
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+}
+.shop-icon{
+  color: #b36b00;
+}

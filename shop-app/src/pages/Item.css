@@ -3,9 +3,10 @@
   display: inline-block;
   width: 400px;
   padding: 8px 16px;
-  background-color: rgb(99, 120, 179);
+  background-color: rgb(223, 208, 195);
   border-radius: 10px;
-  color: white;
+  border: solid 1px #b36b00;
+  color: rgb(32, 32, 32);
   margin: auto;
 }
 

@@ -5,7 +5,7 @@ import "./Nav.css";
 export const Nav = ({onSelectedAllProduct, allProduct}) => {
   return(
     <>
-    <div>
+    <div className="wrapper-nav">
         <ul>
           <li>
             <Link to="/" onClick={() => onSelectedAllProduct(allProduct === 0 ? 1 : 0)}>Products</Link>
@@ -13,9 +13,10 @@ export const Nav = ({onSelectedAllProduct, allProduct}) => {
           <li>
             <Link to="/admin">Admin</Link>
           </li>
+          <li>
+            <Link to="/cart">Cart</Link>
+          </li>
         </ul>
-
-        <hr />
         </div>
         </>
   );
