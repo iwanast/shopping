@@ -26,7 +26,7 @@ export const LoginForm = ({isShowLogin, onLogin}) => {
       isSubmitting: true,
       errorMessage: null
     });
-    fetch("http://localhost:7904/users", {
+    fetch("http://localhost:7904/login", {
       method: "post",
       headers: {
         "Content-Type": "application/json"

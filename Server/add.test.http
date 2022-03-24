@@ -64,3 +64,12 @@ Content-Type: application/json
   "quantity": 2,
   "datestamp": "Wed Mar 23 2022 18:03:09 GMT-0500 (EST)"
 } 
+
+### POST FOR LOGIN 
+POST http://localhost:7904/login
+Content-Type: application/json 
+
+{
+  "username": "alessia.zapalotti@gmail.com",
+  "password": "AlessiaIstSchlauer"
+}
