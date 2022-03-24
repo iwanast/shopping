@@ -34,7 +34,7 @@ app.get("/products", async (req, res) => {
   const terms = (author === undefined && title === undefined ? {} : {$or: filter })
 
   try{
-    const products = await collectionProducts.find(terms).toArray();
+    const products = await collectionProducts.find(terms).sort({author: 1}).toArray();
     res.json(products); 
   }catch (error){
     console.log("Something went wrong when loading the products, bear with us")

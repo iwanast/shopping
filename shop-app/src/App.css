@@ -22,3 +22,27 @@ h1{
 .shop-icon{
   color: #b36b00;
 }
+
+.show {
+  position: absolute;
+  top: 50%; 
+  left: 50%; 
+  margin-right: -50%; 
+  transform: translate(-50%, -50%);
+  display: block;
+  transition: 800ms;
+  opacity: 1;
+  z-index: 10;
+  padding: 20px;
+  background-color: #2b0066;
+  color: white;
+  border-radius: 3px; 
+}
+.margin{
+  margin: 8px;
+}
+
+.show.active {
+  transform: translateY(100px) scale(0) rotateY(180deg);
+  opacity: 0;
+}

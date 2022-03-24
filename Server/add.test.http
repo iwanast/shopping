@@ -25,7 +25,9 @@ Content-Type: application/json
   "startage": 7,
   "quantity": 20,
   "description": "Ein Forscherteam kommt in den palumbianischen Dschungel, um dort einen seltenen Schmetterling zu suchen, der bevorzugt in den Wipfeln der Bäume lebt und seine Eier gerne auf die Nester von Marsupilamis ablegt. Als sich merkwürdige Zwischenfälle häufen, kommt ihnen ein schwerer Verdacht: Ein Saboteur hat sich eingeschlichen! Ab sofort findet eine Doppejagd auf den Schurken und den Schmetterling statt!",
-  "language": "deutsch"
+  "language": "deutsch",
+  "form": "hardcover",
+  "quality": 
 } 
 
 

@@ -33,7 +33,7 @@ export const Search = ({onSelectedChange}) => {
         <label>
           <IoSearchSharp/>
         </label>
-        <input className="input-search" type="text"
+        <input className="input-search" type="text" placeholder="Search"
           onChange={e=> setTerm(e.target.value)}>
         </input>
       </div>

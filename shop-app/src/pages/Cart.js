@@ -8,8 +8,14 @@ export const Cart = () => {
 
   useEffect(() => {
     fetch("http://localhost:7904/shopping-cart")
-      .then((data) => data.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw res;
+      })
       .then((response) => setArticlesInCart(response))
+      .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, []);
   
   return(
