@@ -69,7 +69,7 @@ app.post("/users/login", async (req, res) => {
   function generateAuthToken(){
     console.log("ITs coming in the authTOken")
     // not implemented. only for testing:
-    return {token: "12x7fgh44"};
+    return "12x7fgh44";
   }
   const {username, password} = req.body;
   console.log(`Username: ${username} und Password: ${password}`)

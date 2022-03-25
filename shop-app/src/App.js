@@ -13,8 +13,10 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.playload.token));
+      localStorage.setItem("user", JSON.stringify(action.payload.data.name));
+      localStorage.setItem("token", JSON.stringify(action.payload.data.token));
+      console.log("WHAT IS action.payload:", action.payload);
+      console.log("What is action.payload.user with JSON.stringify", JSON.stringify(action.payload.user))
       return {
         ...state,
         isAuthenticated: true,
@@ -29,6 +31,7 @@ const reducer = (state, action) => {
         user: null
       }
     default:
+      console.log("Default in reducer")
       return state;
   }
 }
@@ -36,12 +39,10 @@ const reducer = (state, action) => {
 
 export const App = () => {
   const [allProduct, setAllProduct] = useState(0);
-  const [showsInLogin, setShowsInLogin] = useState("");
+  // const [showsInLogin, setShowsInLogin] = useState("");
   const [isShowLogin, setIsShowLogin] = useState(false);
   const [state, dispatch] = React.useReducer(reducer, initialState);
-  const handleLoginClick = () => {
-    setIsShowLogin((isShowLogin) => !isShowLogin)
-  }
+
   return (
     <AuthContext.Provider
       value={{state, dispatch}}>
@@ -50,10 +51,10 @@ export const App = () => {
         <Nav onSelectedAllProduct={setAllProduct} allProduct={allProduct} />
         <div className="header-title">
           <h1>Your secondhand <span className="shop-icon"><BiBookHeart /></span> shop</h1>
-          <Login showsInLogin={showsInLogin} handleLoginClick={handleLoginClick} />
+          <Login setIsShowLogin={setIsShowLogin} />
         </div>
       </header>
-      <LoginForm isShowLogin={isShowLogin} onLogin={setShowsInLogin} />
+      <LoginForm isShowLogin={isShowLogin} setIsShowLogin={setIsShowLogin} />
       <Router allProduct={allProduct} />
     </div>
     </AuthContext.Provider>

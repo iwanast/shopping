@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { AuthContext} from "../App";
 
-export const LoginForm = ({isShowLogin, onLogin}) => {
+export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
 
   const {dispatch} = React.useContext(AuthContext)
   const initialState = {
@@ -26,7 +26,7 @@ export const LoginForm = ({isShowLogin, onLogin}) => {
       isSubmitting: true,
       errorMessage: null
     });
-    fetch("http://localhost:7904/login", {
+    fetch("http://localhost:7904/users/login", {
       method: "post",
       headers: {
         "Content-Type": "application/json"
@@ -43,6 +43,8 @@ export const LoginForm = ({isShowLogin, onLogin}) => {
       throw res;
     })
     .then(resJson => {
+      console.log("THIS IS RESJSON:" , resJson)
+      setIsShowLogin((isShowLogin) => !isShowLogin)
       dispatch({
         type: "LOGIN",
         payload: resJson
@@ -56,9 +58,6 @@ export const LoginForm = ({isShowLogin, onLogin}) => {
       })
     })
   }
-
-  const [username, setUsername] = useState("")
-  // onLogin(username)
   
   return(
     <div className={`${!isShowLogin ? "active" : ""} show`}>
@@ -102,7 +101,7 @@ export const LoginForm = ({isShowLogin, onLogin}) => {
              <button className="margin" disabled={data.isSubmitting}>
                {data.isSubmitting ? (
                 "Loading...") : (
-                "Login")}
+                "Login")} 
              </button>
           </form>
         </div>
