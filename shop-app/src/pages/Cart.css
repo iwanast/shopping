@@ -31,7 +31,7 @@
 tbody{
   margin: 16px;
   padding: 8px 16px;
-  background-color: rgb(223, 208, 195);
+  background-color: rgb(201, 242, 251);
   border-radius: 10px;
-  border: solid 1px rgb(179, 107, 0);
+  /* border: solid 1px rgb(179, 107, 0); */
 }

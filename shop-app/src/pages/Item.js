@@ -27,10 +27,12 @@ export const Item = () => {
             <button onClick={nextPicture} className="button-item"><HiArrowSmRight /></button>
           </div>
           <div>
-            <span>{item.author}</span>
-            <h3>{item.title}</h3>
+            <p>{item.author}</p>
+            <span>{item.title}</span>
             <p>{item.description}</p>
-            <p>{item.price} {item.currency}</p>
+            <p>{item.form}, quality: {item.quality}</p>
+            <p >{item.price} {item.currency}</p>
+            <button className="button-buy">Buy</button>
           </div>
         </div>
       </main>

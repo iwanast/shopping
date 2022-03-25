@@ -75,11 +75,8 @@ app.post("/users/login", async (req, res) => {
   console.log(`Username: ${username} und Password: ${password}`)
   try{
     const user = await collectionUsers.findOne({ _id: username});
-    if (!user){
-      return res.status(401).send({message: "User not found"})
-    } 
-    if (user.password != password){
-      return res.status(401).send({message: "Incorrect Password, try again!"});
+    if (!user || user.password != password){
+      return res.status(401).send({message: "User not found or password wrong, try again!"})
     }
     
     user.token = generateAuthToken();
@@ -89,10 +86,11 @@ app.post("/users/login", async (req, res) => {
     return res.status(200).send({
       message: "login successful",
       data: user
-    }).end();
+    });
 
   } catch (error) {
-      res.status(500).send({error});
+    console.log(error)
+    res.sendStatus(500);
   }
 })
 

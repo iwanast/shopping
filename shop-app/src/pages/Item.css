@@ -1,9 +1,10 @@
 .wrapper-item{
+  position: relative;
   text-decoration: none;
   display: inline-block;
   width: 400px;
-  padding: 8px 16px;
-  background-color: rgb(223, 208, 195);
+  padding: 8px 16px 48px 8px;
+  background-color: aliceblue;
   border-radius: 10px;
   border: solid 1px #b36b00;
   color: rgb(32, 32, 32);

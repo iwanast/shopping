@@ -12,22 +12,22 @@ POST http://localhost:7904/products
 Content-Type: application/json 
 
 {
-  "title": "Marsupilami - Die Schmetterlingsjäger",
-  "author": "Franquin Batem & Yann",
-  "price": 200,
+  "title": "Das Osmanische Reich 1300-1922",
+  "author": "GEO EPOCHE",
+  "price": 110,
   "picture": [
-    "http://localhost:7904/pictures/Marsupilami24_0.jpg",
-    "http://localhost:7904/pictures/Marsupilami24_1.jpg",
-    "http://localhost:7904/pictures/Marsupilami24_2.jpg"
+    "http://localhost:7904/pictures/IMG-1920.jpg",
+    "http://localhost:7904/pictures/IMG-1921.jpg",
+    "http://localhost:7904/pictures/IMG-1922.jpg"
   ],
   "currency": "SEK",
-  "genre": "fiction",
-  "startage": 7,
-  "quantity": 20,
-  "description": "Ein Forscherteam kommt in den palumbianischen Dschungel, um dort einen seltenen Schmetterling zu suchen, der bevorzugt in den Wipfeln der Bäume lebt und seine Eier gerne auf die Nester von Marsupilamis ablegt. Als sich merkwürdige Zwischenfälle häufen, kommt ihnen ein schwerer Verdacht: Ein Saboteur hat sich eingeschlichen! Ab sofort findet eine Doppejagd auf den Schurken und den Schmetterling statt!",
+  "genre": "magazine",
+  "startage": 9,
+  "quantity": 30,
+  "description": "Sultane, Wesire, Paschas: Geschichte eines islamischen Imperiums",
   "language": "deutsch",
-  "form": "hardcover",
-  "quality": 
+  "form": "paperback",
+  "quality": "good"
 } 
 
 

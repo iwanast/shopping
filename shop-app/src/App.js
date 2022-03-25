@@ -5,18 +5,18 @@ import {Nav, Login, LoginForm} from "./components";
 import './App.css';
 
 export const AuthContext = React.createContext();
+
 const initialState = {
   isAuthenticated: false,
   user: null,
   token: null
 };
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
       localStorage.setItem("user", JSON.stringify(action.payload.data.name));
       localStorage.setItem("token", JSON.stringify(action.payload.data.token));
-      console.log("WHAT IS action.payload:", action.payload);
-      console.log("What is action.payload.user with JSON.stringify", JSON.stringify(action.payload.user))
       return {
         ...state,
         isAuthenticated: true,
