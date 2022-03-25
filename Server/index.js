@@ -11,10 +11,7 @@ const collectionCart = db.collection("shopping-cart");
 const collectionOrder = db.collection("order");
 const collectionUsers = db.collection("users");
 
-function generateAuthToken(){
-  // not implemented. only for testing:
-  return "12x7fgh44";
-}
+
 //API set-up
 const app = express(); 
 const PORT = 7904; 
@@ -66,6 +63,39 @@ app.post("/products", async (req, res) => {
   }
 })
 
+
+
+app.post("/users/login", async (req, res) => {
+  function generateAuthToken(){
+    console.log("ITs coming in the authTOken")
+    // not implemented. only for testing:
+    return {token: "12x7fgh44"};
+  }
+  const {username, password} = req.body;
+  console.log(`Username: ${username} und Password: ${password}`)
+  try{
+    const user = await collectionUsers.findOne({ _id: username});
+    if (!user){
+      return res.status(401).send({message: "User not found"})
+    } 
+    if (user.password != password){
+      return res.status(401).send({message: "Incorrect Password, try again!"});
+    }
+    
+    user.token = generateAuthToken();
+      
+    await collectionUsers.updateOne({_id: username}, {$set: {"token": user.token}})
+
+    return res.status(200).send({
+      message: "login successful",
+      data: user
+    }).end();
+
+  } catch (error) {
+      res.status(500).send({error});
+  }
+})
+
 app.post("/users", async (req, res) => {
   const insertUser = req.body;
   try{
@@ -86,29 +116,7 @@ app.post("/shopping-cart", async (req, res) => {
   }
 })
 
-app.post("/login", async (req, res) => {
-  const {username, password} = req.body;
-  console.log(`Username: ${username} und Password: ${password}`)
-  try{
-    const user = await collectionUsers.findOne({ _id: username}).toArray();
-    if (!user){
-      return res.status(401).send({message: "User not found"})
-    } 
-    if (user[0].password !== password){
-      return res.status(401).send({message: "Incorrect Password, try again!"});
-    }
-    
-    user.generateAuthToken();
 
-    res.status(200).send({
-      message: "login successful",
-      data: user
-    })
-
-  } catch (error) {
-      res.status(500).send({error});
-  }
-})
 
 
 // Always at the bottom

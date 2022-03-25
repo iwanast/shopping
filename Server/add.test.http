@@ -37,7 +37,7 @@ POST http://localhost:7904/users
 Content-Type: application/json 
 
 {
-    "_id": "alessia.zapalotti@gmail.com",
+    "_id": "silvia",
 "shippingAdress": {
   "street": "Treegreen 8",
   "postalCode": 1010,
@@ -55,7 +55,7 @@ Content-Type: application/json
 {
   "customersId": "guest",
   "article": {  
-    "articleId": {"TOBEINSERTEDFROMTHEOBJEC OR STRING?"},
+    "articleId": "TOBEINSERTEDFROMTHEOBJEC OR STRING?",
     "title": "Marsupilami - Die Schmetterlingsjäger",
     "author": "Franquin Batem & Yann",
     "price": 200,
@@ -66,7 +66,7 @@ Content-Type: application/json
 } 
 
 ### POST FOR LOGIN 
-POST http://localhost:7904/login
+POST http://localhost:7904/users/login
 Content-Type: application/json 
 
 {
