@@ -50,3 +50,9 @@ th{
 .button-order{
   padding: 8px 16px;
 }
+
+.wrapper-button-quantity{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}

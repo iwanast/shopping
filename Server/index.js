@@ -129,11 +129,30 @@ app.post("/users", async (req, res) => {
   }
 })
 
+app.post("/shopping-cart/quantity", async (req, res) => {
+
+  const {productId, quantity} = req.body
+
+  try{
+  
+    const articleExistInCart = await collectionCart.findOne({_id : new mongodb.ObjectId(productId)})
+    if(articleExistInCart.quantity === 1 && quantity === -1){
+      await collectionCart.deleteOne({_id : new mongodb.ObjectId(productId)})
+      res.status(200).end();
+    }else{
+      await collectionCart.updateOne({_id: new mongodb.ObjectId(productId)}, {$set: {"quantity": articleExistInCart.quantity + quantity, "datestamp": new Date()}})
+      res.status(200).end();
+    }
+  }catch (error){
+    console.log(error);
+    res.sendStatus(500);
+  }
+})
+
 app.post("/shopping-cart/article", async (req, res) => {
 
   const {productId, token} = req.body
   let userId = "";
-  let article = {};
 
   try{
     const userInfo = await collectionUsers.find({token: token}).toArray(); 
@@ -170,14 +189,10 @@ app.post("/shopping-cart/article", async (req, res) => {
     await collectionCart.insertOne(articleToCart)
     res.status(200).end();
     }
-
-    
-
   }catch (error){
     console.log(error);
     res.sendStatus(500);
   }
-
   }
 )
 

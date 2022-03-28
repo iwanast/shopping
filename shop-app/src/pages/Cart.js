@@ -26,6 +26,41 @@ export const Cart = () => {
     })
     return sum;
   }
+
+  function changeQuantity (event) {
+    event.preventDefault();
+    const productInCartId = event.target.getAttribute("productid");
+    const quantity = event.target.getAttribute("quantity");
+    let number = 0;
+    if(quantity === "minus"){
+      number = -1;
+    }
+    if(quantity === "plus") {
+      number = 1;
+    }
+  // const token = JSON.parse(localStorage.getItem("token"))
+  // if(!token || token === undefined){
+  //   alert("Something is wrong with your login. Please login before adding/buying items.")
+  // }
+  fetch(`http://localhost:7904/shopping-cart/quantity`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      productId: productInCartId,
+      // token: token,
+      quantity: number
+    })
+  })
+  .then(res => {
+    if (res.ok){
+    console.log(res.json)
+    // return res.json()
+    }
+  throw res;
+})
+}
   
   return(
     <div>
@@ -52,15 +87,15 @@ export const Cart = () => {
                   <td>{article.article.title}</td>
                   <td width="15%" className="text-center">{article.article.price}</td>
                   <td width="15%">
-                    <div className="input-group-cart">
-                      <button type="button" className="input-group-cart-text">-</button>
+                    <div className="wrapper-button-quantity">
+                      <button type="button" onClick={changeQuantity} productid={article._id} quantity="minus" className="button-quantity">-</button>
                       <div>{article.quantity}</div>
-                      <button type="button" className="input-group-cart-text">+</button>
+                      <button type="button" onClick={changeQuantity} productid={article._id} quantity="plus" className="button-quantity">+</button>
                     </div>
                   </td>
                   <td width="15%" className="text-center">{article.article.price*article.quantity}</td>
                   <td width="10%">
-                    <button type="button" className="btn btn-danger btn-sm"><IoTrash /></button>
+                    <button type="button" productid={article._id} className="btn btn-danger btn-sm"><IoTrash /></button>
                   </td>
                 </tr>
               ))
