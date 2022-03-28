@@ -4,7 +4,7 @@ import "./Cart.css";
 
 export const Cart = () => {
   const [articlesInCart, setArticlesInCart] = useState([])
-  // const [count, setCount] = useState(0);
+  const [changingCart, setchangingCart] = useState(false);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
@@ -17,7 +17,7 @@ export const Cart = () => {
       })
       .then((response) => setArticlesInCart(response))
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
-  }, []);
+  }, [changingCart]);
 
   function endSum (articles){
     let sum = 0;
@@ -56,6 +56,7 @@ export const Cart = () => {
   .then(res => {
     if (res.ok){
     console.log(res.json)
+    setchangingCart(!changingCart)
     // return res.json()
     }
   throw res;
