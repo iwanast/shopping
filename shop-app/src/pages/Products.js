@@ -1,23 +1,22 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {Link} from "react-router-dom";
+import { AuthContext } from "../App";
 
 import {Search} from "../components";
 
 export const Products = ({allProduct}) => {
   const [products, setProducts] = useState([]);
+  const {state} = useContext(AuthContext)
+  console.log("STATE in PRODUCTS:JS: ", state)
    
     useEffect(() => {
       fetch("http://localhost:7904/products")
         .then((data) => data.json())
         .then((result) => {
-          console.log(result)
           !result[0] ? alert("Det finns inga produkter att visas för tillfället")
           : setProducts(result);
-          console.log(result)})
+          })
     }, [allProduct]);
-
-
-    console.log("SELECTED ALL PRODUCT?: ", allProduct)
 
   return(
     <>
@@ -34,7 +33,10 @@ export const Products = ({allProduct}) => {
                 <span>{product.author}</span>
                 <p>{product.title}</p>
                 <p>{product.price} {product.currency}</p>
-                <button className="button-buy">Buy</button>
+                <div className="button-buy-wrapper">
+                  <button className="button-buy">Buy</button>
+                  <button className="button-buy">Buy</button>
+                </div>
               </div>
               </Link>
           </li>

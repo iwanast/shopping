@@ -22,6 +22,7 @@ app.use(
 app.use(express.static("public"));
 
 
+// FOR PRODUCTS
 app.get("/products", async (req, res) => {
 
   const {author, title} = req.query
@@ -32,24 +33,35 @@ app.get("/products", async (req, res) => {
   if(title){
     filter.push({title: { $regex: new RegExp(title, "i")}});
   }
-  const terms = (author === undefined && title === undefined ? {} : {$or: filter })
+  const terms = (author === undefined && title === undefined ? filter[0] : {$and: [{quantity: {$gte: 1}}, {$or: filter  }]})
 
   try{
     const products = await collectionProducts.find(terms).sort({author: 1}).toArray();
     res.json(products); 
   }catch (error){
     console.log("Something went wrong when loading the products, bear with us")
-    res.sendStatus(error);
+    res.sendStatus(500)
   }
 });
 
-app.get("/shopping-cart", async (req, res) =>{
+app.get("/shopping-cart/:token", async (req, res) =>{
+  const tokenUser = req.params.token;
+  let userId = "";
+  const cartItems = [];
+
   try{
-    const cartItems = await collectionCart.find({}).toArray();
+    const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
+    if(!userInfo){
+      res.sendStatus(401)
+    }
+    if(userInfo.length === 1){
+      userId = userInfo[0]._id; 
+    } 
+
+    const cartItems = await collectionCart.find({customersId: userId}).toArray();
     res.json(cartItems);
-  }catch (error){
-    console.log("Something went wrong when loading the products, bear with us")
-    res.sendStatus(error);
+  }catch {
+    res.sendStatus(500)
   }
 });
 
@@ -66,13 +78,30 @@ app.post("/products", async (req, res) => {
 
 
 app.post("/users/login", async (req, res) => {
-  function generateAuthToken(){
-    console.log("ITs coming in the authTOken")
+ async function generateAuthToken(){
     // not implemented. only for testing:
-    return "12x7fgh44";
+    const alphabet = [..."abcdefghijklmnopqrstuvwxyz"];
+    const numbers = [..."0123456789"];
+    let tokenNew = "";
+    for(let i = 0; i <= 5; i++) {
+      tokenNew += alphabet[Math.floor(Math.random() * alphabet.length)]
+      tokenNew = tokenNew + numbers[Math.floor(Math.random() * numbers.length)]
+    }
+    
+    const searchingExistingTokens = await collectionUsers.find({token: tokenNew}).toArray();
+    console.log("SearchingExistingTokens after: ", searchingExistingTokens)
+    console.log();
+
+    if (searchingExistingTokens.length == 0 || searchingExistingTokens === undefined){
+      return tokenNew;
+    } else {
+      generateAuthToken();
+    }
+    return tokenNew;
+
   }
+
   const {username, password} = req.body;
-  console.log(`Username: ${username} und Password: ${password}`)
   try{
     const user = await collectionUsers.findOne({ _id: username});
     if (!user || user.password != password){
@@ -104,7 +133,7 @@ app.post("/users", async (req, res) => {
   }
 })
 
-app.post("/shopping-cart", async (req, res) => {
+app.post("/shopping-cart:token", async (req, res) => {
   const insertArticle = req.body;
   try{
     await collectionCart.insertOne(insertArticle);

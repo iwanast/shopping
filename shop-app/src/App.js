@@ -20,8 +20,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload.user,
-        token: action.payload.token
+        user: action.payload.data.name,
+        token: action.payload.data.token
       };
     case "LOGOUT":
       localStorage.clear();
@@ -60,3 +60,18 @@ export const App = () => {
     </AuthContext.Provider>
   );
 }
+
+
+
+
+/*TODO:
+  - implement check if logged-in when clicking on buy or order
+  - implement buy and to cart
+  - implement on-click to order direct
+  - implement admin and shipping
+  - implement cart and to order
+  - implement cart to add or remove item
+  
+  - login window closing when clicking outside
+  - 
+*/

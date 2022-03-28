@@ -21,6 +21,9 @@
   object-fit: scale-down;
 }
 
+.table-responsive{
+  /* center the whole table */
+}
 .table-bordered{
   margin: 16px;
   padding: 8px;
@@ -34,4 +37,16 @@ tbody{
   background-color: rgb(201, 242, 251);
   border-radius: 10px;
   /* border: solid 1px rgb(179, 107, 0); */
+}
+
+.table-fix{
+  background-color: rgb(10, 80, 142);
+  color:white;
+}
+th{
+  padding: 8px;
+}
+
+.button-order{
+  padding: 8px 16px;
 }

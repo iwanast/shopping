@@ -32,7 +32,10 @@ export const Item = () => {
             <p>{item.description}</p>
             <p>{item.form}, quality: {item.quality}</p>
             <p >{item.price} {item.currency}</p>
-            <button className="button-buy">Buy</button>
+            <div className="button-buy-wrapper">
+              <button className="button-buy">Buy</button>
+              <button className="button-buy">Buy</button>
+            </div>
           </div>
         </div>
       </main>

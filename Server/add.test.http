@@ -31,7 +31,6 @@ Content-Type: application/json
 } 
 
 
-
 ### POST A USER 
 POST http://localhost:7904/users
 Content-Type: application/json 
@@ -73,3 +72,7 @@ Content-Type: application/json
   "username": "alessia.zapalotti@gmail.com",
   "password": "AlessiaIstSchlauer"
 }
+
+### GET THE SHOPPING-CART
+
+GET http://localhost:7904/shopping-cart/12x7fgh44

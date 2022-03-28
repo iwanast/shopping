@@ -5,17 +5,23 @@ import "./Search.css";
 export const Search = ({onSelectedChange}) => {
   
   const [term, setTerm] = useState("");
-  console.log("TERM: ", term)
+
   useEffect(() =>{
-    console.log(term)
     const timeoutId = setTimeout(() => {
       if(term){
         fetch(`http://localhost:7904/products?author=${term}&title=${term}`)
         .then(response => response.json())
         .then(data => {
-          console.log(data);
           onSelectedChange(data)
         })
+      } else {
+        console.log("ELSE");
+        fetch("http://localhost:7904/products")
+        .then(response => response.json())
+        .then(data => {
+          onSelectedChange(data)
+        })
+
       }
     }, 500);
   

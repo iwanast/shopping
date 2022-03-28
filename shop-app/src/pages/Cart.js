@@ -7,7 +7,9 @@ export const Cart = () => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:7904/shopping-cart")
+    const token = JSON.parse(localStorage.getItem("token"))
+    console.log("TOKEN FROM LOCALS:", token)
+    fetch(`http://localhost:7904/shopping-cart/${token}`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -17,20 +19,28 @@ export const Cart = () => {
       .then((response) => setArticlesInCart(response))
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, []);
+
+  function endSum (articles){
+    let sum = 0;
+    articles.map((article) => {
+      sum = sum + article.article.price*article.quantity;
+    })
+    return sum;
+  }
   
   return(
     <div>
     <h1 className="title-cart">My Cart</h1>
       <div className="table-responsive">
         <table className="table-bordered">
-          <thead>
+          <thead className="table-fix">
             <tr className="tr-head">
               <th>Image</th>
               <th>Product</th>
               <th className="text-center">Price</th>
               <th className="text-center">Quantity</th>
               <th className="text-center">Total Price</th>
-              <th>Remove</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -57,31 +67,19 @@ export const Cart = () => {
               ))
             )}
           </tbody>
+          <tfoot className="table-fix">
+            <tr className="tr-head">
+              <th></th>
+              <th></th>
+              <th></th>
+              <th className="text-center">Total:</th>
+              <th className="text-center">{endSum(articlesInCart)}</th>
+              <th><button className="button-order">Order</button></th>
+            </tr>
+          </tfoot>
         </table>
       </div>
+
     </div>
   )
 };
-
-
-/* <div>
-<h1 className="title-cart">My Cart</h1>
-<ul className="wrapper-cart">
-{articlesInCart && (
-  articlesInCart.map((product) => (
-    <li key={product._id} className="wrapper-cart-article">
-      <Link to={"/item"} state={{product}} >
-        <img src={product.picture[0]} alt="Book-cover" />
-          <p>{product.title} from {product.author}</p>
-          <label for="quantity">Quantity:</label> <select name="quantity"><option value ></option></select>
-          <p>Price: {product.price} {product.currency}</p>
-          <button>Delete</button>
-          
-         </Link>
-
-    </li>   
-  ))
-)}
-</ul>
-</div> 
-  );*/

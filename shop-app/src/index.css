@@ -63,7 +63,7 @@ ul{
   align-content: space-between;
 }
 
-.button-buy{
+.wrapper-button-buy{
   position: absolute;
   bottom: 16px;
   padding: 4px 16px;

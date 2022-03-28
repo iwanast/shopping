@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import { AuthContext} from "../App";
 
 export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
 
-  const {dispatch} = React.useContext(AuthContext)
+  const {dispatch} = useContext(AuthContext)
   const initialState = {
     name: "",
     email: "",
@@ -11,7 +11,7 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
     isSubmitting: false,
     errorMessage: null
   };
-  const [data, setData] = React.useState(initialState);
+  const [data, setData] = useState(initialState);
   
   const handleInputChange = event => {
     setData({
@@ -99,9 +99,9 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
               <span className="form-error">{data.errorMessage}"</span>
             )}
              <button className="margin" disabled={data.isSubmitting}>
-               {data.isSubmitting ? (
-                "Loading...") : (
-                "Login")} 
+               {data.isSubmitting ? 
+                "Loading..." : 
+                "Login"} 
              </button>
           </form>
         </div>
