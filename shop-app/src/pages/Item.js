@@ -1,13 +1,18 @@
 import React, { useState} from "react";
 import {useLocation} from "react-router-dom";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
+import { addToCart } from "../components/addToCart";
 import './Item.css';
 
 export const Item = () => {
 
   const location = useLocation()
   const item = location.state.product;
+  // console.log(location.data.addToCart())
   const images = item.picture;
+  
+
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextPicture = () => {
@@ -33,8 +38,8 @@ export const Item = () => {
             <p>{item.form}, quality: {item.quality}</p>
             <p >{item.price} {item.currency}</p>
             <div className="button-buy-wrapper">
-              <button className="button-buy">Buy</button>
-              <button className="button-buy">Buy</button>
+              <button onClick={addToCart} productid={item._id} className="button-buy">Add to Cart</button>
+              <button className="button-buy" productid={item._id}>Buy with Oneclick</button>
             </div>
           </div>
         </div>
