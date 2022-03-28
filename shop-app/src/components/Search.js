@@ -15,7 +15,6 @@ export const Search = ({onSelectedChange}) => {
           onSelectedChange(data)
         })
       } else {
-        console.log("ELSE");
         fetch("http://localhost:7904/products")
         .then(response => response.json())
         .then(data => {

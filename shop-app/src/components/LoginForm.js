@@ -43,7 +43,6 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
       throw res;
     })
     .then(resJson => {
-      console.log("THIS IS RESJSON:" , resJson)
       setIsShowLogin((isShowLogin) => !isShowLogin)
       dispatch({
         type: "LOGIN",

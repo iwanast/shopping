@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {BiLogIn} from "react-icons/bi";
 import {BiLogOut} from "react-icons/bi"
 import { AuthContext } from "../App";

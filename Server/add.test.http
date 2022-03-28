@@ -74,5 +74,14 @@ Content-Type: application/json
 }
 
 ### GET THE SHOPPING-CART
-
 GET http://localhost:7904/shopping-cart/12x7fgh44
+
+
+### Post a product to the shopping-cart
+POST http://localhost:7904/shopping-cart/article
+Content-Type: application/json
+     
+{
+  "productId": "623e3e6f829ee9c8e9da95ea",
+  "token": "d5p2i9l6v9o0"
+}

@@ -75,8 +75,6 @@ app.post("/products", async (req, res) => {
   }
 })
 
-
-
 app.post("/users/login", async (req, res) => {
  async function generateAuthToken(){
     // not implemented. only for testing:
@@ -89,8 +87,6 @@ app.post("/users/login", async (req, res) => {
     }
     
     const searchingExistingTokens = await collectionUsers.find({token: tokenNew}).toArray();
-    console.log("SearchingExistingTokens after: ", searchingExistingTokens)
-    console.log();
 
     if (searchingExistingTokens.length == 0 || searchingExistingTokens === undefined){
       return tokenNew;
@@ -98,7 +94,6 @@ app.post("/users/login", async (req, res) => {
       generateAuthToken();
     }
     return tokenNew;
-
   }
 
   const {username, password} = req.body;
@@ -108,8 +103,9 @@ app.post("/users/login", async (req, res) => {
       return res.status(401).send({message: "User not found or password wrong, try again!"})
     }
     
-    user.token = generateAuthToken();
-      
+    user.token = await generateAuthToken();
+    console.log(user.token)
+    console.log({"token": JSON.stringify(user.token)})
     await collectionUsers.updateOne({_id: username}, {$set: {"token": user.token}})
 
     return res.status(200).send({
@@ -133,15 +129,68 @@ app.post("/users", async (req, res) => {
   }
 })
 
-app.post("/shopping-cart:token", async (req, res) => {
-  const insertArticle = req.body;
+app.post("/shopping-cart/article", async (req, res) => {
+
+  const {productId, token} = req.body
+  let userId = "";
+  let article = {};
+
   try{
-    await collectionCart.insertOne(insertArticle);
+    const userInfo = await collectionUsers.find({token: token}).toArray(); 
+    if(!userInfo){
+      res.sendStatus(401)
+    }
+    if(userInfo.length === 1){
+      userId = userInfo[0]._id; 
+    } 
+
+    const articleInfo = await collectionProducts.findOne({_id : new mongodb.ObjectId(productId)})
+    if(!articleInfo || articleInfo === null){
+      res.sendStatus(404)
+    }
+    const articleExistInCart = await collectionCart.findOne({$and: [{customersId : userId}, { "article.articleId": new mongodb.ObjectId(productId)}]})
+    if(articleExistInCart){
+      await collectionCart.updateOne({_id: articleExistInCart._id}, {$set: {"quantity": articleExistInCart.quantity + 1, "datestamp": new Date()}})
+      res.status(200).end();
+    }else{
+      const {_id, title, author, price, picture, currency} = articleInfo;
+      const articleToCart = {
+        customersId: userId,
+        article: {
+          title: title,
+          articleId: _id,
+          author: author,
+          price: price,
+          picture: picture[0],
+          currency: currency
+        },
+        quantity: 1,
+        datestamp: new Date()
+      }
+    await collectionCart.insertOne(articleToCart)
     res.status(200).end();
-  } catch{
-    res.sendStatus(500)
+    }
+
+    
+
+  }catch (error){
+    console.log(error);
+    res.sendStatus(500);
   }
-})
+
+  }
+)
+
+
+// app.post("/shopping-cart:token", async (req, res) => {
+//   const insertArticle = req.body;
+//   try{
+//     await collectionCart.insertOne(insertArticle);
+//     res.status(200).end();
+//   } catch{
+//     res.sendStatus(500)
+//   }
+// })
 
 
 

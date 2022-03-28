@@ -4,11 +4,10 @@ import "./Cart.css";
 
 export const Cart = () => {
   const [articlesInCart, setArticlesInCart] = useState([])
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
-    console.log("TOKEN FROM LOCALS:", token)
     fetch(`http://localhost:7904/shopping-cart/${token}`)
       .then(res => {
         if (res.ok) {

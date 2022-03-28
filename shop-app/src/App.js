@@ -73,5 +73,6 @@ export const App = () => {
   - implement cart to add or remove item
   
   - login window closing when clicking outside
-  - 
+  - login-form clearing when logout
+  - adding/subtracting quantity in products
 */
