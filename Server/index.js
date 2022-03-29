@@ -129,6 +129,20 @@ app.post("/users", async (req, res) => {
   }
 })
 
+app.delete("/shopping-cart", async (req, res) => {
+
+  const productId = req.body.productId
+  console.log("PRODUCTID: ", productId)
+  try{
+      await collectionCart.deleteOne({_id : new mongodb.ObjectId(productId)})
+      res.status(200).end();
+  }catch (error){
+    console.log(error);
+    res.sendStatus(500);
+  }
+})
+
+
 app.post("/shopping-cart/quantity", async (req, res) => {
 
   const {productId, quantity} = req.body

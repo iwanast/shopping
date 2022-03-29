@@ -38,10 +38,7 @@ export const Cart = () => {
     if(quantity === "plus") {
       number = 1;
     }
-  // const token = JSON.parse(localStorage.getItem("token"))
-  // if(!token || token === undefined){
-  //   alert("Something is wrong with your login. Please login before adding/buying items.")
-  // }
+
   fetch(`http://localhost:7904/shopping-cart/quantity`, {
     method: "post",
     headers: {
@@ -49,18 +46,41 @@ export const Cart = () => {
     },
     body: JSON.stringify({
       productId: productInCartId,
-      // token: token,
       quantity: number
     })
   })
   .then(res => {
     if (res.ok){
-    console.log(res.json)
     setchangingCart(!changingCart)
-    // return res.json()
     }
-  throw res;
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+}
+
+function deleteProduct (event) {
+  event.preventDefault();
+  const productid = event.currentTarget.getAttribute("productid");
+
+fetch(`http://localhost:7904/shopping-cart`, {
+  method: "delete",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    productId: productid
+  })
 })
+.then(res => {
+  if (res.ok){
+  setchangingCart(!changingCart)
+  }
+throw res;
+})
+.catch((err) => {
+  console.log(err.message);
+});
 }
   
   return(
@@ -96,7 +116,7 @@ export const Cart = () => {
                   </td>
                   <td width="15%" className="text-center">{article.article.price*article.quantity}</td>
                   <td width="10%">
-                    <button type="button" productid={article._id} className="btn btn-danger btn-sm"><IoTrash /></button>
+                    <button type="button" onClick={deleteProduct} productid={article._id} className="btn btn-danger btn-sm"> <IoTrash /> </button>
                   </td>
                 </tr>
               ))

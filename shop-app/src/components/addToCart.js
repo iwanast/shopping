@@ -22,4 +22,7 @@ export  function addToCart(event){
     }
   throw res;
 })
+.catch((err) => {
+  console.log(err.message);
+});
 }

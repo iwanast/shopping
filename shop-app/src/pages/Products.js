@@ -14,6 +14,9 @@ export const Products = ({allProduct}) => {
           !result[0] ? alert("Det finns inga produkter att visas för tillfället")
           : setProducts(result);
           })
+          .catch((err) => {
+            console.log(err.message);
+          });
     }, [allProduct]);
 
   return(
