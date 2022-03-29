@@ -22,13 +22,14 @@
 }
 
 .table-responsive{
-  /* center the whole table */
+  position: relative;
 }
 .table-bordered{
   margin: 16px;
   padding: 8px;
   border-radius: 3px;
   background-color: aliceblue;
+  margin:auto;
 }
 
 tbody{

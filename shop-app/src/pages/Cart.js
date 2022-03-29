@@ -4,7 +4,7 @@ import "./Cart.css";
 
 export const Cart = () => {
   const [articlesInCart, setArticlesInCart] = useState([])
-  const [changingCart, setchangingCart] = useState(false);
+  const [changingCart, setChangingCart] = useState(false);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
@@ -51,7 +51,7 @@ export const Cart = () => {
   })
   .then(res => {
     if (res.ok){
-    setchangingCart(!changingCart)
+    setChangingCart(!changingCart)
     }
   })
   .catch((err) => {
@@ -74,7 +74,7 @@ fetch(`http://localhost:7904/shopping-cart`, {
 })
 .then(res => {
   if (res.ok){
-  setchangingCart(!changingCart)
+  setChangingCart(!changingCart)
   }
 throw res;
 })
