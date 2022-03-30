@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import {useLocation} from "react-router-dom";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
-import { addToCart } from "../components/addToCart";
+import { addToCart, addToOrderOneClick } from "../components";
 import './Item.css';
 
 export const Item = () => {
@@ -39,7 +39,7 @@ export const Item = () => {
             <p >{item.price} {item.currency}</p>
             <div className="button-buy-wrapper">
               <button onClick={addToCart} productid={item._id} className="button-buy">Add to Cart</button>
-              <button className="button-buy" productid={item._id}>Buy with Oneclick</button>
+              <button onClick={addToOrderOneClick} className="button-buy" productid={item._id}>Buy with Oneclick</button>
             </div>
           </div>
         </div>

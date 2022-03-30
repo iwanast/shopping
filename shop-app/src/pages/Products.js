@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
-import { addToCart } from "../components/addToCart";
+import { addToCart, addToOrderOneClick } from "../components";
 
 import {Search} from "../components";
 
@@ -36,7 +36,7 @@ export const Products = ({allProduct}) => {
                 <p>{product.price} {product.currency}</p>
                 <div className="button-buy-wrapper">
                   <button onClick={addToCart} productid={product._id} className="button-buy">Add to Cart</button>
-                  <button className="button-buy" productid={product._id}>Buy with Oneclick</button>
+                  <button onClick={addToOrderOneClick} className="button-buy" productid={product._id}>Buy with Oneclick</button>
                 </div>
               </div>
               </Link>

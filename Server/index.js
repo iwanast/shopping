@@ -21,8 +21,61 @@ app.use(
   );
 app.use(express.static("public"));
 
+////////////////////////////////////FUNCTIONS/////////////////////////////////////////
+async function generateAuthToken(){
+  // not implemented. only for testing:
+  const alphabet = [..."abcdefghijklmnopqrstuvwxyz"];
+  const numbers = [..."0123456789"];
+  let tokenNew = "";
+  for(let i = 0; i <= 5; i++) {
+    tokenNew += alphabet[Math.floor(Math.random() * alphabet.length)]
+    tokenNew = tokenNew + numbers[Math.floor(Math.random() * numbers.length)]
+  }
+  
+  const searchingExistingTokens = await collectionUsers.find({token: tokenNew}).toArray();
 
+  if (searchingExistingTokens.length == 0 || searchingExistingTokens === undefined){
+    return tokenNew;
+  } else {
+    generateAuthToken();
+  }
+  return tokenNew;
+}
 
+async function tokenValidating(token){
+  try{
+    const userInfo = await collectionUsers.find({token: token}).toArray(); 
+    if(userInfo.length === 0){
+      return res.sendStatus(401)
+    }
+    if(userInfo.length === 1){
+      return userInfo[0]._id;
+    }
+  } catch (error){
+      console.log(error);
+    res.sendStatus(500);
+  }
+}
+
+async function createNewOrderNumber(customersId){
+  try{
+    const existingOrderWithHighestNumber = await collectionOrders.find({customersId: customersId}).sort({"orderNumber" : -1}).limit(1).toArray();
+
+    if(existingOrderWithHighestNumber.length === 0 || !existingOrderWithHighestNumber){
+      return 110;
+    } else {
+      return existingOrderWithHighestNumber[0].orderNumber + 1;
+    }
+  }catch{
+    res.sendStatus(500)
+  }
+}
+
+async function findAProduct(filter){
+
+}
+
+/////////////////////////////////////////////METHODS/////////////////////////////////////////////////////
 app.get("/products", async (req, res) => {
 
   const {author, title} = req.query
@@ -46,17 +99,11 @@ app.get("/products", async (req, res) => {
 
 app.get("/shopping-cart/:token", async (req, res) =>{
   const tokenUser = req.params.token;
-  let userId = "";
-
+  const userId =  await tokenValidating(tokenUser);
+  if (userId === 0){
+    return res.sendStatus(401)
+  }
   try{
-    const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
-    if(userInfo.length === 0 || !userInfo){
-      res.sendStatus(401)
-    }
-    if(userInfo.length === 1){
-      userId = userInfo[0]._id; 
-    } 
-
     const cartItems = await collectionCart.find({customersId: userId}).toArray();
     res.json(cartItems);
   }catch {
@@ -66,20 +113,13 @@ app.get("/shopping-cart/:token", async (req, res) =>{
 
 app.get("/orders/:token", async (req, res) =>{
   const tokenUser = req.params.token;
-  let userId = "";
+  const userId =  await tokenValidating(tokenUser);
+  if (userId === 0){
+    return res.sendStatus(401)
+  }
 
   try{
-    const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
-    if(userInfo.length === 0 || !userInfo){
-      res.sendStatus(401)
-    }
-    if(userInfo.length === 1){
-      userId = userInfo[0]._id; 
-    } 
-    console.log(userId)
-
     const orders = await collectionOrders.find({customersId: userId}).toArray();
-    console.log(orders)
     res.json(orders);
   }catch {
     res.sendStatus(500)
@@ -95,22 +135,16 @@ app.post("/products", async (req, res) => {
   } catch{
     res.sendStatus(500)
   }
-})
+});
 
 app.post("/shopping-cart/article", async (req, res) => {
-
   const {productId, token} = req.body
-  let userId = "";
+  const userId =  await tokenValidating(token);
+  if (userId === 0){
+    return res.sendStatus(401)
+  }
 
   try{
-    const userInfo = await collectionUsers.find({token: token}).toArray(); 
-    if(userInfo.length === 0){
-      return res.sendStatus(401)
-    }
-    if(userInfo.length === 1){
-      userId = userInfo[0]._id;
-    } 
-
     const articleInfo = await collectionProducts.findOne({_id : new mongodb.ObjectId(productId)})
     if(!articleInfo || articleInfo === null){
       res.sendStatus(404)
@@ -141,92 +175,104 @@ app.post("/shopping-cart/article", async (req, res) => {
     console.log(error);
     res.sendStatus(500);
   }
+});
+
+
+
+app.post("/order/article", async (req, res) => {
+  const {productId, token} = req.body
+  const userId =  await tokenValidating(token);
+  if (userId === 0){
+    return res.sendStatus(401)
   }
-)
+
+  try{
+    const userInfo = await collectionUsers.find({token: token}).toArray();
+    const customerAdress = userInfo.customerAdress;
+
+    const articleInfo = await collectionProducts.findOne({_id : new mongodb.ObjectId(productId)})
+    if(!articleInfo || articleInfo === null){
+      res.sendStatus(404)
+    }
+    
+    const {_id, title, price, currency, datestamp} = articleInfo;
+    const orderNumber = await createNewOrderNumber(userId)
+    const articleToOrder = {
+      orderNumber: orderNumber,
+      customersId: userId,
+      status: "ordered",
+      customerAdress: customerAdress,
+      datestamp: new Date(),
+      articles: [{
+        title: title,
+        articleId: _id,
+        price: price,
+        currency: currency,
+        quantity: 1,
+        datestamp: datestamp
+      }]        
+    }
+    await collectionOrders.insertOne(articleToOrder)
+    res.status(200).end();
+    
+  }catch (error){
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
 
 app.post("/orders/post", async (req, res) => {
   // const insertItem = req.body;
   const tokenUser = req.body.token;
-  let customersId = "";
   let customerAdress = {};
   let insertOrder = {};
-  let newOrderNumber = 0;
+  const userId =  await tokenValidating(tokenUser);
+  if (userId === 0){
+    return res.sendStatus(401)
+  }
   try{
     const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
-    if(userInfo.length === 0 || !userInfo){
-      res.sendStatus(401)
+    customerAdress= userInfo[0].shippingAdress;
+    
+    const allArticleInCart = await collectionCart.find({customersId: customersId}).toArray();
+    if (allArticleInCart.length === 0 || !allArticleInCart){
+      return res.sendStatus(404);
     }
-    if(userInfo.length === 1){
-      customersId = userInfo[0]._id; 
-      customerAdress= userInfo[0].shippingAdress;
-    } 
 
-   const allArticleInCart = await collectionCart.find({customersId: customersId}).toArray();
+    allArticleInCart.forEach(item => {
+      delete item.article["author"];
+      delete item.article["picture"];
+      delete item["_id"];
+      delete item["customersId"];
+      item.article.quantity = item.quantity;
+      delete item["quantity"];
+      item.article.datestamp = item.datestamp;
+      delete item["datestamp"];
+    });
 
-   if (allArticleInCart.length === 0 || !allArticleInCart){
-     return res.sendStatus(404);
-   }
+    const newOrderNumber = await createNewOrderNumber(customersId);
+    
+    insertOrder = {
+      "orderNumber": newOrderNumber,
+      "customersId": customersId,
+      "status": "ordered",
+      "customerAdress": customerAdress,
+      "datestamp": new Date(),
+      "articles": allArticleInCart.map(item => {
+        const newObject = item.article
+        return newObject;
+      })
+    }
 
-   allArticleInCart.forEach(item => {
-    delete item.article["author"];
-    delete item.article["picture"];
-    delete item["_id"];
-    delete item["customersId"];
-    item.article.quantity = item.quantity;
-    delete item["quantity"];
-    item.article.datestamp = item.datestamp;
-    delete item["datestamp"];
-   });
-
-   const existingOrderWithHighestNumber = await collectionOrders.find().sort({"orderNumber" : -1}).limit(1).toArray();
-
-   if(existingOrderWithHighestNumber.length === 0 || !existingOrderWithHighestNumber){
-     newOrderNumber = 110;
-   } else {
-    newOrderNumber = existingOrderWithHighestNumber[0].orderNumber + 1;
-   }
-   
-   insertOrder = {
-     "orderNumber": newOrderNumber,
-    "customersId": customersId,
-    "status": "ordered",
-    "customerAdress": customerAdress,
-    "datestamp": new Date(),
-    "articles": allArticleInCart.map(item => {
-      const newObject = item.article
-      return newObject;
-    })
-   }
-
-   await collectionOrders.insertOne(insertOrder);
-   await collectionCart.deleteMany({customersId: customersId});
+    await collectionOrders.insertOne(insertOrder);
+    await collectionCart.deleteMany({customersId: customersId});
     res.status(200).end();
   }catch {
     res.sendStatus(500)
   }
-})
+});
 
 app.post("/users/login", async (req, res) => {
- async function generateAuthToken(){
-    // not implemented. only for testing:
-    const alphabet = [..."abcdefghijklmnopqrstuvwxyz"];
-    const numbers = [..."0123456789"];
-    let tokenNew = "";
-    for(let i = 0; i <= 5; i++) {
-      tokenNew += alphabet[Math.floor(Math.random() * alphabet.length)]
-      tokenNew = tokenNew + numbers[Math.floor(Math.random() * numbers.length)]
-    }
-    
-    const searchingExistingTokens = await collectionUsers.find({token: tokenNew}).toArray();
-
-    if (searchingExistingTokens.length == 0 || searchingExistingTokens === undefined){
-      return tokenNew;
-    } else {
-      generateAuthToken();
-    }
-    return tokenNew;
-  }
-
   const {username, password} = req.body;
   try{
     const user = await collectionUsers.findOne({ _id: username});
@@ -242,11 +288,11 @@ app.post("/users/login", async (req, res) => {
       data: user
     });
 
-  } catch (error) {
+  }catch (error) {
     console.log(error)
     res.sendStatus(500);
   }
-})
+});
 
 app.post("/users", async (req, res) => {
   const insertUser = req.body;
@@ -256,7 +302,7 @@ app.post("/users", async (req, res) => {
   } catch{
     res.sendStatus(500)
   }
-})
+});
 
 app.delete("/shopping-cart", async (req, res) => {
 
@@ -268,12 +314,11 @@ app.delete("/shopping-cart", async (req, res) => {
     console.log(error);
     res.sendStatus(500);
   }
-})
+});
 
 app.delete("/orders", async (req, res) => {
 
   const orderNumber = parseInt(req.body.orderNumber);
-  console.log("ORDERNR: ", typeof(orderNumber), orderNumber)
   try{
       await collectionOrders.deleteOne({orderNumber : orderNumber})
       res.status(200).end();
@@ -281,11 +326,10 @@ app.delete("/orders", async (req, res) => {
     console.log(error);
     res.sendStatus(500);
   }
-})
+});
 
 
 app.patch("/shopping-cart/quantity", async (req, res) => {
-
   const {productId, quantity} = req.body
 
   try{
@@ -301,11 +345,10 @@ app.patch("/shopping-cart/quantity", async (req, res) => {
     console.log(error);
     res.sendStatus(500);
   }
-})
+});
 
 
 
-// Always at the bottom
 app.listen(PORT, () => {
   console.log("Is listening on port ", PORT)
 });
