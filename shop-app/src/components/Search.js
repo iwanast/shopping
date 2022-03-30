@@ -14,12 +14,18 @@ export const Search = ({onSelectedChange}) => {
         .then(data => {
           onSelectedChange(data)
         })
+        .catch((err) => {
+          console.log(err.message);
+        });
       } else {
         fetch("http://localhost:7904/products")
         .then(response => response.json())
         .then(data => {
           onSelectedChange(data)
         })
+        .catch((err) => {
+          console.log(err.message);
+        });
 
       }
     }, 500);

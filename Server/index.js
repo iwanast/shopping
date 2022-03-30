@@ -45,9 +45,6 @@ async function generateAuthToken(){
 async function tokenValidating(token){
   try{
     const userInfo = await collectionUsers.find({token: token}).toArray(); 
-    if(userInfo.length === 0){
-      return res.sendStatus(401)
-    }
     if(userInfo.length === 1){
       return userInfo[0]._id;
     }
@@ -234,7 +231,7 @@ app.post("/orders/post", async (req, res) => {
     const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
     customerAdress= userInfo[0].shippingAdress;
     
-    const allArticleInCart = await collectionCart.find({customersId: customersId}).toArray();
+    const allArticleInCart = await collectionCart.find({customersId: userId}).toArray();
     if (allArticleInCart.length === 0 || !allArticleInCart){
       return res.sendStatus(404);
     }
@@ -250,11 +247,11 @@ app.post("/orders/post", async (req, res) => {
       delete item["datestamp"];
     });
 
-    const newOrderNumber = await createNewOrderNumber(customersId);
+    const newOrderNumber = await createNewOrderNumber(userId);
     
     insertOrder = {
       "orderNumber": newOrderNumber,
-      "customersId": customersId,
+      "customersId": userId,
       "status": "ordered",
       "customerAdress": customerAdress,
       "datestamp": new Date(),
@@ -265,7 +262,7 @@ app.post("/orders/post", async (req, res) => {
     }
 
     await collectionOrders.insertOne(insertOrder);
-    await collectionCart.deleteMany({customersId: customersId});
+    await collectionCart.deleteMany({customersId: userId});
     res.status(200).end();
   }catch {
     res.sendStatus(500)

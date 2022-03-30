@@ -13,10 +13,10 @@ export const Products = ({allProduct}) => {
         .then((result) => {
           !result[0] ? alert("Det finns inga produkter att visas för tillfället")
           : setProducts(result);
-          })
-          .catch((err) => {
-            console.log(err.message);
-          });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     }, [allProduct]);
 
   return(
