@@ -4,7 +4,6 @@ import "./Nav.css";
 
 export const Nav = ({onSelectedAllProduct, allProduct}) => {
   const role = JSON.parse(localStorage.getItem("role"))
-  console.log(role)
   return(
     <>
     <div className="wrapper-nav">

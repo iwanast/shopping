@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from  "react";
-import {IoTrash} from "react-icons/io5";
 import "./Cart.css";
 
 export const Admin = () => {
@@ -15,16 +14,16 @@ export const Admin = () => {
         }
         throw res;
       })
-      .then((response) => setOrders(response))
+      .then((response) => {setOrders(response)
+        console.log("RESPONS: ",response)})
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, [changingOrder]);
 
-function deleteProduct (event) {
+function shippingDone (event) {
   event.preventDefault();
   const orderNumber = event.currentTarget.getAttribute("ordernumber");
-  console.log(orderNumber)
-fetch(`http://localhost:7904/orders`, {
-  method: "delete",
+fetch(`http://localhost:7904/orders/admin/update`, {
+  method: "patch",
   headers: {
     "Content-Type": "application/json"
   },
@@ -43,13 +42,6 @@ throw res;
 });
 }
 
-function calcPrice(orders) {
-  let sum = 0;
-  orders.forEach(article => {
-      sum += article.price * article.quantity;
-  })
-  return sum;
-}
   
   return(
     <div>
@@ -60,9 +52,9 @@ function calcPrice(orders) {
             <tr className="tr-head">
               <th>Ordernr</th>
               <th>Articles</th>
-              <th className="text-center">Price</th>
+              <th className="text-center">Shipping adress</th>
               <th className="text-center">Status</th>
-              <th className="text-center">Delete</th>
+              <th className="text-center">Shipping</th>
             </tr>
           </thead>
           <tbody>
@@ -80,10 +72,10 @@ function calcPrice(orders) {
                       )))}
                     </ul>
                   </td>
-                  <td width="15%" className="text-center">{calcPrice(order.articles)}</td>
+                  <td className="text-center"> </td>
                   <td width="15%" className="text-center">{order.status}</td>
                   <td width="10%">
-                  {order.status === "ordered" ? <button type="button" onClick={deleteProduct} ordernumber={order.orderNumber} className="btn btn-danger btn-sm">  <IoTrash /></button> : "" } 
+                  <button type="button" onClick={shippingDone} ordernumber={order.orderNumber} className="btn btn-danger btn-sm">  Shipping done</button>
                   </td>
                 </tr>
               ))
