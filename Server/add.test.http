@@ -98,3 +98,12 @@ Content-Type: application/json
 ### GET THE ORDERS
 
 GET http://localhost:7904/orders/g5d8l7f2o3t6
+
+### Post an order
+
+DELETE  http://localhost:7904/orders
+Content-Type: application/json
+
+{
+  "orderNumber": "111"
+}

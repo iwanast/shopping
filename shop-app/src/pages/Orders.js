@@ -22,7 +22,7 @@ export const Orders = () => {
 function deleteProduct (event) {
   event.preventDefault();
   const orderNumber = event.currentTarget.getAttribute("ordernumber");
-
+  console.log(orderNumber)
 fetch(`http://localhost:7904/orders`, {
   method: "delete",
   headers: {
