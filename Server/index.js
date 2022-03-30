@@ -123,6 +123,25 @@ app.get("/orders/:token", async (req, res) =>{
   }
 });
 
+app.get("/orders/admin/:token", async (req,res) => {
+  const tokenUser = req.params.token;
+  const userId =  await tokenValidating(tokenUser);
+  if (userId === 0){
+    return res.sendStatus(401)
+  }
+  try{
+    const userInfo = await collectionUsers.find({token: tokenUser}).toArray();
+    console.log("USERINFO: ", userInfo)
+    if (userInfo[0].role != "admin"){
+      return res.sendStatus(401)
+    }
+    const allOrders = await collectionOrders.find({}).toArray();
+    res.json(allOrders)
+  }catch(error){
+    res.sendStatus(500)
+  }
+});
+
 
 app.post("/products", async (req, res) => {
   const insertItem = req.body;

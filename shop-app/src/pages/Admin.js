@@ -8,7 +8,7 @@ export const Admin = () => {
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch(`http://localhost:7904/orders/${token}`)
+    fetch(`http://localhost:7904/orders/admin/${token}`)
       .then(res => {
         if (res.ok) {
           return res.json();
