@@ -17,6 +17,7 @@ const reducer = (state, action) => {
     case "LOGIN":
       localStorage.setItem("user", JSON.stringify(action.payload.data.name));
       localStorage.setItem("token", JSON.stringify(action.payload.data.token));
+      localStorage.setItem("role", JSON.stringify(action.payload.data.role));
       return {
         ...state,
         isAuthenticated: true,
@@ -65,13 +66,18 @@ export const App = () => {
 
 
 /*TODO:
+  - separate the functions into different files
+  - separate the Serverside more with different files
   - see on button Cart or Order how many you have;
   - implement on-click to order direct
   - implement admin and shipping
-  - implement to order
+  - user have to confirm shipping-adress
   - user can change shipping-adress when ordering (at the moment I take the adress from the sign-in)
   - sign-up-page for not users
   - login window closing when clicking outside
   - login-form clearing when logout
-  - adding/subtracting quantity in products
+
+
+  - auth
+  - payment
 */

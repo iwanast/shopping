@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "./Nav.css";
 
 export const Nav = ({onSelectedAllProduct, allProduct}) => {
+  const role = JSON.parse(localStorage.getItem("role"))
+  console.log(role)
   return(
     <>
     <div className="wrapper-nav">
@@ -16,10 +18,10 @@ export const Nav = ({onSelectedAllProduct, allProduct}) => {
           <li>
             <Link to="/orders">Orders</Link>
           </li>
-          <li>
-            <Link to="/admin">Admin</Link>
-          </li>
-        
+
+          {role === "admin" ?   <li>
+            <Link to="/admin">Admin </Link>
+          </li> : ""}
         </ul>
         </div>
         </>

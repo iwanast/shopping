@@ -235,8 +235,6 @@ app.post("/users/login", async (req, res) => {
     }
     
     user.token = await generateAuthToken();
-    console.log(user.token)
-    console.log({"token": JSON.stringify(user.token)})
     await collectionUsers.updateOne({_id: username}, {$set: {"token": user.token}})
 
     return res.status(200).send({
