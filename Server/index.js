@@ -135,7 +135,7 @@ app.get("/orders/admin/:token", async (req,res) => {
     if (userInfo[0].role != "admin"){
       return res.sendStatus(401)
     }
-    const allOrders = await collectionOrders.find({}).toArray();
+    const allOrders = await collectionOrders.find({status: "ordered"}).sort({customersId: 1}).toArray();
     res.json(allOrders)
   }catch(error){
     res.sendStatus(500)
@@ -362,6 +362,17 @@ app.patch("/shopping-cart/quantity", async (req, res) => {
   }
 });
 
+app.patch("/orders/update", async (req, res) => {
+  const orderId = req.body.orderId
+
+  try{
+    await collectionOrders.updateOne({_id: new mongodb.ObjectId(orderId)}, {$set: {"status": "shipped", "datestamp": new Date()}})
+    res.status(200).end();
+  }catch (error){
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
 
 
 app.listen(PORT, () => {

@@ -21,14 +21,14 @@ export const Admin = () => {
 
 function shippingDone (event) {
   event.preventDefault();
-  const orderNumber = event.currentTarget.getAttribute("ordernumber");
-fetch(`http://localhost:7904/orders/admin/update`, {
-  method: "patch",
+  const orderId = event.currentTarget.getAttribute("orderid");
+fetch(`http://localhost:7904/orders/update`, {
+  method: "PATCH",
   headers: {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    orderNumber: orderNumber
+    orderId: orderId
   })
 })
 .then(res => {
@@ -72,10 +72,10 @@ throw res;
                       )))}
                     </ul>
                   </td>
-                  <td className="text-center"> </td>
+                  <td>{order.customerAdress.street}<br/>{order.customerAdress.postalCode} {order.customerAdress.city}<br/>{order.customerAdress.country}</td>
                   <td width="15%" className="text-center">{order.status}</td>
                   <td width="10%">
-                  <button type="button" onClick={shippingDone} ordernumber={order.orderNumber} className="btn btn-danger btn-sm">  Shipping done</button>
+                  <button type="button" onClick={shippingDone} orderid={order._id} className="btn btn-danger btn-sm">  Shipping done</button>
                   </td>
                 </tr>
               ))

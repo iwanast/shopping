@@ -66,6 +66,7 @@ export const App = () => {
 
 
 /*TODO:
+  - order the Admin orders after user
   - separate the functions into different files
   - separate the Serverside more with different files
   - see on button Cart or Order how many you have;
