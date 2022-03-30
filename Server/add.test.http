@@ -94,3 +94,7 @@ Content-Type: application/json
 {
   "token": "g5d8l7f2o3t6"
 }
+
+### GET THE ORDERS
+
+GET http://localhost:7904/orders/g5d8l7f2o3t6

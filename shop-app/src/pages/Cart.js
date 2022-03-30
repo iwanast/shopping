@@ -39,48 +39,48 @@ export const Cart = () => {
       number = 1;
     }
 
-  fetch(`http://localhost:7904/shopping-cart/quantity`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      productId: productInCartId,
-      quantity: number
+    fetch(`http://localhost:7904/shopping-cart/quantity`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        productId: productInCartId,
+        quantity: number
+      })
     })
-  })
-  .then(res => {
-    if (res.ok){
-    setChangingCart(!changingCart)
-    }
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+    .then(res => {
+      if (res.ok){
+      setChangingCart(!changingCart)
+      }
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 }
 
 function deleteProduct (event) {
   event.preventDefault();
   const productid = event.currentTarget.getAttribute("productid");
 
-fetch(`http://localhost:7904/shopping-cart`, {
-  method: "delete",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    productId: productid
+  fetch(`http://localhost:7904/shopping-cart`, {
+    method: "delete",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      productId: productid
+    })
   })
-})
-.then(res => {
-  if (res.ok){
-  setChangingCart(!changingCart)
-  }
-throw res;
-})
-.catch((err) => {
-  console.log(err.message);
-});
+  .then(res => {
+    if (res.ok){
+    setChangingCart(!changingCart)
+    }
+  throw res;
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
 }
   
 function orderAllInCart(event){

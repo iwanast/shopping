@@ -19,17 +19,9 @@ export const Orders = () => {
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, [changingOrder]);
 
-  function endSum (articles){
-    let sum = 0;
-    articles.map((order) => {
-      sum = sum + order.order.price*order.quantity;
-    })
-    return sum;
-  }
-
 function deleteProduct (event) {
   event.preventDefault();
-  const productid = event.currentTarget.getAttribute("productid");
+  const orderNumber = event.currentTarget.getAttribute("ordernumber");
 
 fetch(`http://localhost:7904/orders`, {
   method: "delete",
@@ -37,7 +29,7 @@ fetch(`http://localhost:7904/orders`, {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    productId: productid
+    orderNumber: orderNumber
   })
 })
 .then(res => {
@@ -49,6 +41,14 @@ throw res;
 .catch((err) => {
   console.log(err.message);
 });
+}
+
+function calcPrice(orders) {
+  let sum = 0;
+  orders.forEach(article => {
+      sum += article.price * article.quantity;
+  })
+  return sum;
 }
   
   return(
@@ -69,14 +69,21 @@ throw res;
             {orders && (
               orders.map((order) => (
                 <tr key={order._id} className="tr-order">
-                  <td width="10%">
-                    <img src={order.order.picture} alt="Book cover" width="50px" height="50px"/>
+                  <td width="10%">{order.orderNumber}</td>
+                  <td>
+                    <ul>
+                      { order.articles && (
+                      order.articles.map(article => (
+                        <li key={article.articleId}>
+                          {article.title}
+                        </li>
+                      )))}
+                    </ul>
                   </td>
-                  <td>{order.order.title}</td>
-                  <td width="15%" className="text-center">{order.order.price}</td>
-                  <td width="15%" className="text-center">{order.order.price*order.quantity}</td>
+                  <td width="15%" className="text-center">{calcPrice(order.articles)}</td>
+                  <td width="15%" className="text-center">{order.status}</td>
                   <td width="10%">
-                    <button type="button" onClick={deleteProduct} productid={order._id} className="btn btn-danger btn-sm"> <IoTrash /> </button>
+                  {order.status === "ordered" ? <button type="button" onClick={deleteProduct} ordernumber={order.orderNumber} className="btn btn-danger btn-sm">  <IoTrash /></button> : "" } 
                   </td>
                 </tr>
               ))

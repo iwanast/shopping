@@ -76,8 +76,10 @@ app.get("/orders/:token", async (req, res) =>{
     if(userInfo.length === 1){
       userId = userInfo[0]._id; 
     } 
+    console.log(userId)
 
     const orders = await collectionOrders.find({customersId: userId}).toArray();
+    console.log(orders)
     res.json(orders);
   }catch {
     res.sendStatus(500)
@@ -148,6 +150,7 @@ app.post("/orders/post", async (req, res) => {
   let customersId = "";
   let customerAdress = {};
   let insertOrder = {};
+  let newOrderNumber = 0;
   try{
     const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
     if(userInfo.length === 0 || !userInfo){
@@ -175,8 +178,13 @@ app.post("/orders/post", async (req, res) => {
     delete item["datestamp"];
    });
 
-   const existingOrders = await collectionOrders.find({}).toArray();
-   const newOrderNumber = existingOrders.length + 110;
+   const existingOrderWithHighestNumber = await collectionOrders.find().sort({"orderNumber" : -1}).limit(1).toArray();
+
+   if(existingOrderWithHighestNumber.length === 0 || !existingOrderWithHighestNumber){
+     newOrderNumber = 110;
+   } else {
+    newOrderNumber = existingOrderWithHighestNumber[0].orderNumber + 1;
+   }
    
    insertOrder = {
      "orderNumber": newOrderNumber,
