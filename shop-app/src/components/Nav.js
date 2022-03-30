@@ -11,11 +11,15 @@ export const Nav = ({onSelectedAllProduct, allProduct}) => {
             <Link to="/" onClick={() => onSelectedAllProduct(allProduct === 0 ? 1 : 0)}>Products</Link>
           </li>
           <li>
-            <Link to="/admin">Admin</Link>
-          </li>
-          <li>
             <Link to="/cart">Cart</Link>
           </li>
+          <li>
+            <Link to="/orders">Orders</Link>
+          </li>
+          <li>
+            <Link to="/admin">Admin</Link>
+          </li>
+        
         </ul>
         </div>
         </>

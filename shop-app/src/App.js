@@ -65,13 +65,12 @@ export const App = () => {
 
 
 /*TODO:
-  - implement check if logged-in when clicking on buy or order
-  - implement buy and to cart
+  - see on button Cart or Order how many you have;
   - implement on-click to order direct
   - implement admin and shipping
-  - implement cart and to order
-  - implement cart to add or remove item
-  
+  - implement to order
+  - user can change shipping-adress when ordering (at the moment I take the adress from the sign-in)
+  - sign-up-page for not users
   - login window closing when clicking outside
   - login-form clearing when logout
   - adding/subtracting quantity in products

@@ -85,3 +85,12 @@ Content-Type: application/json
   "productId": "623e3e6f829ee9c8e9da95ea",
   "token": "d5p2i9l6v9o0"
 }
+
+### Post an order
+
+POST http://localhost:7904/orders/post
+Content-Type: application/json
+
+{
+  "token": "g5d8l7f2o3t6"
+}

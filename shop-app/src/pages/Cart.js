@@ -40,7 +40,7 @@ export const Cart = () => {
     }
 
   fetch(`http://localhost:7904/shopping-cart/quantity`, {
-    method: "post",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
@@ -83,6 +83,35 @@ throw res;
 });
 }
   
+function orderAllInCart(event){
+  event.preventDefault();
+
+  const token = JSON.parse(localStorage.getItem("token"))
+  if(!token || token === undefined){
+    alert("Something is wrong with your login. Please login before adding/buying items.")
+  }
+
+  fetch("http://localhost:7904/orders/post", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({token: token}) 
+
+  })
+  .then(res => {
+    if (res.ok){
+    setChangingCart(!changingCart)
+    } else if(res.status === 404){
+      alert("Feel free to selecte products first.")
+    }
+  throw res;
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+}
+
   return(
     <div>
     <h1 className="title-cart">My Cart</h1>
@@ -129,7 +158,7 @@ throw res;
               <th></th>
               <th className="text-center">Total:</th>
               <th className="text-center">{endSum(articlesInCart)}</th>
-              <th><button className="button-order">Order</button></th>
+              <th><button onClick={orderAllInCart} className="button-order">Order</button></th>
             </tr>
           </tfoot>
         </table>

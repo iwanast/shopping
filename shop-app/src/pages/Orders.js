@@ -1,0 +1,90 @@
+import React, {useEffect, useState} from  "react";
+import {IoTrash} from "react-icons/io5";
+import "./Cart.css";
+
+export const Orders = () => {
+  const [orders, setOrders] = useState([])
+  const [changingOrder, setChangingOrder] = useState(false);
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch(`http://localhost:7904/orders/${token}`)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw res;
+      })
+      .then((response) => setOrders(response))
+      .catch((error) => console.log("Something went wrong with fetching the data: ", error))
+  }, [changingOrder]);
+
+  function endSum (articles){
+    let sum = 0;
+    articles.map((order) => {
+      sum = sum + order.order.price*order.quantity;
+    })
+    return sum;
+  }
+
+function deleteProduct (event) {
+  event.preventDefault();
+  const productid = event.currentTarget.getAttribute("productid");
+
+fetch(`http://localhost:7904/orders`, {
+  method: "delete",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    productId: productid
+  })
+})
+.then(res => {
+  if (res.ok){
+  setChangingOrder(!changingOrder)
+  }
+throw res;
+})
+.catch((err) => {
+  console.log(err.message);
+});
+}
+  
+  return(
+    <div>
+    <h1 className="title-cart">My Orders</h1>
+      <div className="table-responsive">
+        <table className="table-bordered">
+          <thead className="table-fix">
+            <tr className="tr-head">
+              <th>Ordernr</th>
+              <th>Articles</th>
+              <th className="text-center">Price</th>
+              <th className="text-center">Status</th>
+              <th className="text-center">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders && (
+              orders.map((order) => (
+                <tr key={order._id} className="tr-order">
+                  <td width="10%">
+                    <img src={order.order.picture} alt="Book cover" width="50px" height="50px"/>
+                  </td>
+                  <td>{order.order.title}</td>
+                  <td width="15%" className="text-center">{order.order.price}</td>
+                  <td width="15%" className="text-center">{order.order.price*order.quantity}</td>
+                  <td width="10%">
+                    <button type="button" onClick={deleteProduct} productid={order._id} className="btn btn-danger btn-sm"> <IoTrash /> </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  )
+};

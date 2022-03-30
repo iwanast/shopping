@@ -8,7 +8,7 @@ mongoClient.connect();
 const db = mongoClient.db("Project-data-interaction");
 const collectionProducts = db.collection("products");
 const collectionCart = db.collection("shopping-cart");
-const collectionOrder = db.collection("order");
+const collectionOrders = db.collection("orders");
 const collectionUsers = db.collection("users");
 
 
@@ -22,7 +22,7 @@ app.use(
 app.use(express.static("public"));
 
 
-// FOR PRODUCTS
+
 app.get("/products", async (req, res) => {
 
   const {author, title} = req.query
@@ -37,21 +37,20 @@ app.get("/products", async (req, res) => {
 
   try{
     const products = await collectionProducts.find(terms).sort({author: 1}).toArray();
-    res.json(products); 
+    return res.json(products).end(); 
   }catch (error){
     console.log("Something went wrong when loading the products, bear with us")
-    res.sendStatus(500)
+    res.sendStatus(500) 
   }
 });
 
 app.get("/shopping-cart/:token", async (req, res) =>{
   const tokenUser = req.params.token;
   let userId = "";
-  const cartItems = [];
 
   try{
     const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
-    if(!userInfo){
+    if(userInfo.length === 0 || !userInfo){
       res.sendStatus(401)
     }
     if(userInfo.length === 1){
@@ -65,12 +64,136 @@ app.get("/shopping-cart/:token", async (req, res) =>{
   }
 });
 
+app.get("/orders/:token", async (req, res) =>{
+  const tokenUser = req.params.token;
+  let userId = "";
+
+  try{
+    const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
+    if(userInfo.length === 0 || !userInfo){
+      res.sendStatus(401)
+    }
+    if(userInfo.length === 1){
+      userId = userInfo[0]._id; 
+    } 
+
+    const orders = await collectionOrders.find({customersId: userId}).toArray();
+    res.json(orders);
+  }catch {
+    res.sendStatus(500)
+  }
+});
+
+
 app.post("/products", async (req, res) => {
   const insertItem = req.body;
   try{
     await collectionProducts.insertOne(insertItem);
     res.status(200).end();
   } catch{
+    res.sendStatus(500)
+  }
+})
+
+app.post("/shopping-cart/article", async (req, res) => {
+
+  const {productId, token} = req.body
+  let userId = "";
+
+  try{
+    const userInfo = await collectionUsers.find({token: token}).toArray(); 
+    if(userInfo.length === 0){
+      return res.sendStatus(401)
+    }
+    if(userInfo.length === 1){
+      userId = userInfo[0]._id;
+    } 
+
+    const articleInfo = await collectionProducts.findOne({_id : new mongodb.ObjectId(productId)})
+    if(!articleInfo || articleInfo === null){
+      res.sendStatus(404)
+    }
+    const articleExistInCart = await collectionCart.findOne({$and: [{customersId : userId}, { "article.articleId": new mongodb.ObjectId(productId)}]})
+    if(articleExistInCart){
+      await collectionCart.updateOne({_id: articleExistInCart._id}, {$set: {"quantity": articleExistInCart.quantity + 1, "datestamp": new Date()}})
+      res.status(200).end();
+    }else{
+      const {_id, title, author, price, picture, currency} = articleInfo;
+      const articleToCart = {
+        customersId: userId,
+        article: {
+          title: title,
+          articleId: _id,
+          author: author,
+          price: price,
+          picture: picture[0],
+          currency: currency
+        },
+        quantity: 1,
+        datestamp: new Date()
+      }
+    await collectionCart.insertOne(articleToCart)
+    res.status(200).end();
+    }
+  }catch (error){
+    console.log(error);
+    res.sendStatus(500);
+  }
+  }
+)
+
+app.post("/orders/post", async (req, res) => {
+  // const insertItem = req.body;
+  const tokenUser = req.body.token;
+  let customersId = "";
+  let customerAdress = {};
+  let insertOrder = {};
+  try{
+    const userInfo = await collectionUsers.find({token: tokenUser}).toArray(); 
+    if(userInfo.length === 0 || !userInfo){
+      res.sendStatus(401)
+    }
+    if(userInfo.length === 1){
+      customersId = userInfo[0]._id; 
+      customerAdress= userInfo[0].shippingAdress;
+    } 
+
+   const allArticleInCart = await collectionCart.find({customersId: customersId}).toArray();
+
+   if (allArticleInCart.length === 0 || !allArticleInCart){
+     return res.sendStatus(404);
+   }
+
+   allArticleInCart.forEach(item => {
+    delete item.article["author"];
+    delete item.article["picture"];
+    delete item["_id"];
+    delete item["customersId"];
+    item.article.quantity = item.quantity;
+    delete item["quantity"];
+    item.article.datestamp = item.datestamp;
+    delete item["datestamp"];
+   });
+
+   const existingOrders = await collectionOrders.find({}).toArray();
+   const newOrderNumber = existingOrders.length + 110;
+   
+   insertOrder = {
+     "orderNumber": newOrderNumber,
+    "customersId": customersId,
+    "status": "ordered",
+    "customerAdress": customerAdress,
+    "datestamp": new Date(),
+    "articles": allArticleInCart.map(item => {
+      const newObject = item.article
+      return newObject;
+    })
+   }
+
+   await collectionOrders.insertOne(insertOrder);
+   await collectionCart.deleteMany({customersId: customersId});
+    res.status(200).end();
+  }catch {
     res.sendStatus(500)
   }
 })
@@ -143,7 +266,7 @@ app.delete("/shopping-cart", async (req, res) => {
 })
 
 
-app.post("/shopping-cart/quantity", async (req, res) => {
+app.patch("/shopping-cart/quantity", async (req, res) => {
 
   const {productId, quantity} = req.body
 
@@ -162,52 +285,7 @@ app.post("/shopping-cart/quantity", async (req, res) => {
   }
 })
 
-app.post("/shopping-cart/article", async (req, res) => {
 
-  const {productId, token} = req.body
-  let userId = "";
-
-  try{
-    const userInfo = await collectionUsers.find({token: token}).toArray(); 
-    if(!userInfo){
-      res.sendStatus(401)
-    }
-    if(userInfo.length === 1){
-      userId = userInfo[0]._id; 
-    } 
-
-    const articleInfo = await collectionProducts.findOne({_id : new mongodb.ObjectId(productId)})
-    if(!articleInfo || articleInfo === null){
-      res.sendStatus(404)
-    }
-    const articleExistInCart = await collectionCart.findOne({$and: [{customersId : userId}, { "article.articleId": new mongodb.ObjectId(productId)}]})
-    if(articleExistInCart){
-      await collectionCart.updateOne({_id: articleExistInCart._id}, {$set: {"quantity": articleExistInCart.quantity + 1, "datestamp": new Date()}})
-      res.status(200).end();
-    }else{
-      const {_id, title, author, price, picture, currency} = articleInfo;
-      const articleToCart = {
-        customersId: userId,
-        article: {
-          title: title,
-          articleId: _id,
-          author: author,
-          price: price,
-          picture: picture[0],
-          currency: currency
-        },
-        quantity: 1,
-        datestamp: new Date()
-      }
-    await collectionCart.insertOne(articleToCart)
-    res.status(200).end();
-    }
-  }catch (error){
-    console.log(error);
-    res.sendStatus(500);
-  }
-  }
-)
 
 // Always at the bottom
 app.listen(PORT, () => {

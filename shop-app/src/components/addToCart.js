@@ -17,12 +17,12 @@ export  function addToCart(event){
   })
   .then(res => {
     if (res.ok){
-    console.log(res.json)
-    // return res.json()
+    }else if(res.Unauthorized){
+      alert("Something went wrong. Could you try to login again?");
     }
-  throw res;
-})
-.catch((err) => {
-  console.log(err.message);
-});
+    throw res;
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
 }
