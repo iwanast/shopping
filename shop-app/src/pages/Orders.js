@@ -2,7 +2,7 @@ import React, {useEffect, useState} from  "react";
 import {IoTrash} from "react-icons/io5";
 import "./Cart.css";
 
-export const Orders = ({setNumberOfOrdersInOrders}) => {
+export const Orders = () => {
   const [orders, setOrders] = useState([])
   const [changingOrder, setChangingOrder] = useState(false);
 
@@ -17,7 +17,6 @@ export const Orders = ({setNumberOfOrdersInOrders}) => {
       })
       .then((response) => {
         setOrders(response);
-        setNumberOfOrdersInOrders(response.length)
       })
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, [changingOrder]);

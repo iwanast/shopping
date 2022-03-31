@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {BiBookHeart} from "react-icons/bi";
 import {Router} from "./Router";
 import {Nav, Login, LoginForm} from "./components";
 import './App.css';
 
 export const AuthContext = React.createContext();
+export const CounterNumberOfArticles = React.createContext();
 
 const initialState = {
   isAuthenticated: false,
@@ -12,7 +13,7 @@ const initialState = {
   token: null
 };
 
-const reducer = (state, action) => {
+const reducerAuth = (state, action) => {
   switch (action.type) {
     case "LOGIN":
       localStorage.setItem("user", JSON.stringify(action.payload.data.name));
@@ -37,36 +38,68 @@ const reducer = (state, action) => {
   }
 }
 
+const initialStateNumberOfArticles = {count: 0};
+
+function reducerNumberOfArticles (stateNumberOfArticles, action) {
+  switch (action.type) {
+    case "increment":
+      return {count: stateNumberOfArticles.count + 1};
+    case "decrement":
+      return {count: stateNumberOfArticles.count - 1};
+    default:
+      throw new Error();
+  }
+}
+
+
 
 export const App = () => {
   const [allProduct, setAllProduct] = useState(0);
   const [isShowLogin, setIsShowLogin] = useState(false);
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-  const [numberOfArticlesInCart, setNumberOfArticlesInCart] = useState();
-  const [numberOfOrdersInOrders, setNumberOfOrdersInOrders] = useState();
+  const [state, dispatch] = React.useReducer(reducerAuth, initialState);
+  const [stateNumberOfArticles, dispatchNumberOfArticles] = React.useReducer(reducerNumberOfArticles, initialStateNumberOfArticles)
+  
+
+  useEffect(()=>{
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch(`http://localhost:7904/shopping-cart/${token}`)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw res;
+      })
+      .then((response) => {
+        setInitialStateNumberOfArticles(response)
+      })
+      .catch((error) => console.log("Something went wrong with fetching the data: ", error))
+  }, [])
+
+  function setInitialStateNumberOfArticles(response){
+    for(let i= 0; i < response.length; i++){
+      dispatchNumberOfArticles({type: "increment"})
+    }
+  }
 
   return (
     <AuthContext.Provider
       value={{state, dispatch}}>
+    <CounterNumberOfArticles.Provider value={{stateNumberOfArticles, dispatchNumberOfArticles}}>
     <div className="App">
       <header>
-        <Nav onSelectedAllProduct={setAllProduct} allProduct={allProduct} numberOfArticlesInCart={numberOfArticlesInCart} numberOfOrdersInOrders={numberOfOrdersInOrders}/>
+        <Nav onSelectedAllProduct={setAllProduct} allProduct={allProduct} />
         <div className="header-title">
           <h1>Your secondhand <span className="shop-icon"><BiBookHeart /></span> shop</h1>
           <Login setIsShowLogin={setIsShowLogin} />
         </div>
       </header>
       <LoginForm isShowLogin={isShowLogin} setIsShowLogin={setIsShowLogin} />
-      <Router 
-        allProduct={allProduct}
-        setNumberOfArticlesInCart={setNumberOfArticlesInCart} 
-        setNumberOfOrdersInOrders={setNumberOfOrdersInOrders} 
-      />
+      <Router allProduct={allProduct} />
     </div>
+    </CounterNumberOfArticles.Provider>
     </AuthContext.Provider>
   );
 }
-
 
 
 
@@ -74,9 +107,6 @@ export const App = () => {
   - make more components (like Button) to reuse
   - separate the functions into different files
   - separate the Serverside more with different files
-  - see on button Cart or Order how many you have;
-  - implement on-click to order direct
-  - implement admin and shipping
   - user have to confirm shipping-adress
   - user can change shipping-adress when ordering (at the moment I take the adress from the sign-in)
   - sign-up-page for not users

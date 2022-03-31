@@ -1,4 +1,5 @@
 export  function addToCart(event){
+
   event.preventDefault();
   const productId = event.target.getAttribute("productid");
   const token = JSON.parse(localStorage.getItem("token"))

@@ -1,10 +1,12 @@
-import React, { useEffect } from  "react";
+
 import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import {CounterNumberOfArticles} from "../App"
 import "./Nav.css";
 
-export const Nav = ({onSelectedAllProduct, allProduct, numberOfOrdersInOrders, numberOfArticlesInCart}) => {
+export const Nav = ({onSelectedAllProduct, allProduct}) => {
   const role = JSON.parse(localStorage.getItem("role"))
-
+  const {stateNumberOfArticles} = useContext(CounterNumberOfArticles)
   
   return(
     <>
@@ -14,10 +16,10 @@ export const Nav = ({onSelectedAllProduct, allProduct, numberOfOrdersInOrders, n
             <Link to="/" onClick={() => onSelectedAllProduct(allProduct === 0 ? 1 : 0)}>Products</Link>
           </li>
           <li>
-            <Link to="/cart">Cart {numberOfArticlesInCart > 0 ? <span className="span">{numberOfArticlesInCart}</span> : ""}</Link>
+            <Link to="/cart">Cart {stateNumberOfArticles.count > 0 ? <span className="span">{stateNumberOfArticles.count}</span> : ""}</Link>
           </li>
           <li>
-            <Link to="/orders">Orders {numberOfOrdersInOrders > 0 ? <span className="span">{numberOfOrdersInOrders}</span> : ""}</Link>
+            <Link to="/orders">Orders {1 > 0 ? <span className="span">1</span> : ""}</Link>
           </li>
 
           {role === "admin" ?   <li>

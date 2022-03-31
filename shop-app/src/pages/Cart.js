@@ -1,10 +1,20 @@
-import React, {useEffect, useState} from  "react";
+import React, {useEffect, useState, useContext} from  "react";
 import {IoTrash} from "react-icons/io5"
+import { CounterNumberOfArticles } from "../App";
 import "./Cart.css";
 
-export const Cart = ({setNumberOfArticlesInCart}) => {
+function endSum (articles){
+  let sum = 0;
+  articles.map((article) => {
+    sum = sum + article.article.price*article.quantity;
+  })
+  return sum;
+}
+
+export const Cart = () => {
   const [articlesInCart, setArticlesInCart] = useState([])
   const [changingCart, setChangingCart] = useState(false);
+  const {dispatchNumberOfArticles} = useContext(CounterNumberOfArticles);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
@@ -17,19 +27,9 @@ export const Cart = ({setNumberOfArticlesInCart}) => {
       })
       .then((response) => {
         setArticlesInCart(response);
-        setNumberOfArticlesInCart(response.length)
       })
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, [changingCart]);
-
-
-  function endSum (articles){
-    let sum = 0;
-    articles.map((article) => {
-      sum = sum + article.article.price*article.quantity;
-    })
-    return sum;
-  }
 
   function changeQuantity (event) {
     event.preventDefault();
@@ -79,6 +79,7 @@ function deleteProduct (event) {
   .then(res => {
     if (res.ok){
     setChangingCart(!changingCart)
+    dispatchNumberOfArticles({type: "decrement"});
     }
   throw res;
   })

@@ -13,4 +13,4 @@ Hyper Island - Data interaction
 
 🦾 The working process: 
 
-🎧 The projects content: 
+🎧 The projects content: A basic online-shop for second-hand books.
