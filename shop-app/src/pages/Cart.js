@@ -5,9 +5,9 @@ import "./Cart.css";
 
 function endSum (articles){
   let sum = 0;
-  articles.map((article) => {
+  articles.forEach(article => {
     sum = sum + article.article.price*article.quantity;
-  })
+  });
   return sum;
 }
 
