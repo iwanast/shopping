@@ -37,10 +37,10 @@ export const Item = () => {
             <button onClick={nextPicture} className="button-item"><HiArrowSmRight /></button>
           </div>
           <div>
-            <p>{item.author}</p>
-            <span>{item.title}</span>
-            <p>{item.description}</p>
-            <p>{item.form}, quality: {item.quality}</p>
+            <p className="text-smaller">{item.author}</p>
+            <span className="product-title">{item.title}</span>
+            <p className="product-description">{item.description}</p>
+            <p className="text-middle">{item.form}, quality: {item.quality}</p>
             <p >{item.price} {item.currency}</p>
             <div className="button-buy-wrapper">
             <button onClick={(event) => {addToCart(event); increaseNumberByOne(dispatchNumberOfArticles)}}    productid={item._id} className="button-buy">Add to Cart</button>

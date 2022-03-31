@@ -75,7 +75,7 @@ throw res;
                   <td>{order.customerAdress.street}<br/>{order.customerAdress.postalCode} {order.customerAdress.city}<br/>{order.customerAdress.country}</td>
                   <td width="15%" className="text-center">{order.status}</td>
                   <td width="10%">
-                  <button type="button" onClick={shippingDone} orderid={order._id} className="btn btn-danger btn-sm">  Shipping done</button>
+                  <button type="button" onClick={shippingDone} orderid={order._id} className="btn btn-danger btn-sm">Shipping</button>
                   </td>
                 </tr>
               ))

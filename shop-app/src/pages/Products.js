@@ -40,8 +40,8 @@ export const Products = ({allProduct}) => {
             <Link to={"/item"} state={{product}}>
               <img src={product.picture[0]} alt="Book-cover" />
               <div className="wrapper-product-text">
-                <span>{product.author}</span>
-                <p>{product.title}</p>
+                <span className="text-smaller">{product.author}</span>
+                <p className="product-title">{product.title}</p>
                 <p>{product.price} {product.currency}</p>
                 <div className="button-buy-wrapper">
                   <button onClick={(event) => {addToCart(event); increaseNumberByOne(dispatchNumberOfArticles)}}   productid={product._id} className="button-buy">Add to Cart</button>
