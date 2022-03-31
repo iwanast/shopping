@@ -14,8 +14,7 @@ export const Admin = () => {
         }
         throw res;
       })
-      .then((response) => {setOrders(response)
-        console.log("RESPONS: ",response)})
+      .then((response) => setOrders(response))
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, [changingOrder]);
 
