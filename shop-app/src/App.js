@@ -6,6 +6,7 @@ import './App.css';
 
 export const AuthContext = React.createContext();
 export const CounterNumberOfArticles = React.createContext();
+export const CounterNumberOfOrders = React.createContext();
 
 const initialState = {
   isAuthenticated: false,
@@ -51,6 +52,18 @@ function reducerNumberOfArticles (stateNumberOfArticles, action) {
   }
 }
 
+const initialStateNumberOfOrders = {count: 0};
+
+function reducerNumberOfOrders (stateNumberOfOrders, action) {
+  switch (action.type) {
+    case "increment":
+      return {count: stateNumberOfOrders.count + 1};
+    case "decrement":
+      return {count: stateNumberOfOrders.count - 1};
+    default:
+      throw new Error();
+  }
+}
 
 
 export const App = () => {
@@ -58,10 +71,10 @@ export const App = () => {
   const [isShowLogin, setIsShowLogin] = useState(false);
   const [state, dispatch] = React.useReducer(reducerAuth, initialState);
   const [stateNumberOfArticles, dispatchNumberOfArticles] = React.useReducer(reducerNumberOfArticles, initialStateNumberOfArticles)
-  
+  const [stateNumberOfOrders, dispatchNumberOfOrders] = React.useReducer(reducerNumberOfOrders, initialStateNumberOfOrders)
+  const token = JSON.parse(localStorage.getItem("token"))
 
   useEffect(()=>{
-    const token = JSON.parse(localStorage.getItem("token"))
     fetch(`http://localhost:7904/shopping-cart/${token}`)
       .then(res => {
         if (res.ok) {
@@ -70,14 +83,38 @@ export const App = () => {
         throw res;
       })
       .then((response) => {
-        setInitialStateNumberOfArticles(response)
+        setInitialStateNumberArticles(response, dispatchNumberOfArticles)
       })
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, [])
 
-  function setInitialStateNumberOfArticles(response){
+  function setInitialStateNumberArticles(response, dispatch){
+    response.forEach(element => {
+      for(let i=0; i < element.quantity; i++){
+        dispatch({type: "increment"})
+      }
+    });
+  }
+
+  useEffect(() => {
+    fetch(`http://localhost:7904/orders/${token}`)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw res;
+      })
+      .then((response) => {
+        console.log(response)
+        setInitialStateNumber(response, dispatchNumberOfOrders)
+      })
+      .catch((error) => console.log("Something went wrong with fetching the data: ", error))
+  }, []);
+
+  function setInitialStateNumber(response, dispatch){
     for(let i= 0; i < response.length; i++){
-      dispatchNumberOfArticles({type: "increment"})
+      dispatch({type: "increment"})
+      console.log("ORDERINCREMENT")
     }
   }
 
@@ -85,6 +122,7 @@ export const App = () => {
     <AuthContext.Provider
       value={{state, dispatch}}>
     <CounterNumberOfArticles.Provider value={{stateNumberOfArticles, dispatchNumberOfArticles}}>
+    <CounterNumberOfOrders.Provider value={{stateNumberOfOrders, dispatchNumberOfOrders}}>
     <div className="App">
       <header>
         <Nav onSelectedAllProduct={setAllProduct} allProduct={allProduct} />
@@ -96,6 +134,7 @@ export const App = () => {
       <LoginForm isShowLogin={isShowLogin} setIsShowLogin={setIsShowLogin} />
       <Router allProduct={allProduct} />
     </div>
+    </CounterNumberOfOrders.Provider>
     </CounterNumberOfArticles.Provider>
     </AuthContext.Provider>
   );

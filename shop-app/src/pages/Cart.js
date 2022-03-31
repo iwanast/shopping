@@ -38,9 +38,11 @@ export const Cart = () => {
     let number = 0;
     if(quantity === "minus"){
       number = -1;
+      dispatchNumberOfArticles({type: "decrement"});
     }
     if(quantity === "plus") {
       number = 1;
+      dispatchNumberOfArticles({type: "increment"});
     }
 
     fetch(`http://localhost:7904/shopping-cart/quantity`, {

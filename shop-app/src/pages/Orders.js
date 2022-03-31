@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from  "react";
+import React, {useEffect, useState, useContext} from  "react";
 import {IoTrash} from "react-icons/io5";
+import {CounterNumberOfOrders} from "../App"
 import "./Cart.css";
 
 export const Orders = () => {
   const [orders, setOrders] = useState([])
   const [changingOrder, setChangingOrder] = useState(false);
+  const {dispatchNumberOfOrders} = useContext(CounterNumberOfOrders);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
@@ -37,6 +39,7 @@ fetch(`http://localhost:7904/orders`, {
 .then(res => {
   if (res.ok){
   setChangingOrder(!changingOrder)
+  dispatchNumberOfOrders({type: "decrement"});
   }
 throw res;
 })
