@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react";
 import {useLocation} from "react-router-dom";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { addToCart, addToOrderOneClick } from "../components";
-import {CounterNumberOfArticles} from "../App"
+import {CounterNumberOfArticles, CounterNumberOfOrders} from "../App"
 import './Item.css';
 
 export const Item = () => {
@@ -11,6 +11,8 @@ export const Item = () => {
   const item = location.state.product;
   const images = item.picture;
   const {dispatchNumberOfArticles} = useContext(CounterNumberOfArticles)
+  const {dispatchNumberOfOrders} = useContext(CounterNumberOfOrders)
+
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -20,8 +22,9 @@ export const Item = () => {
   const prevPicture = () => {
   setCurrentImageIndex(currentImageIndex === 0 ? images.length - 1 : currentImageIndex -1);
   };
-  function numberOfArticles(){
-    dispatchNumberOfArticles({type: "increment"});
+
+  function increaseNumberByOne(dispatch){
+    dispatch({type: "increment"});
   }
 
   return(
@@ -40,8 +43,8 @@ export const Item = () => {
             <p>{item.form}, quality: {item.quality}</p>
             <p >{item.price} {item.currency}</p>
             <div className="button-buy-wrapper">
-              <button onClick={(event) => {addToCart(event); numberOfArticles()}} productid={item._id} className="button-buy">Add to Cart</button>
-              <button onClick={addToOrderOneClick} className="button-buy" productid={item._id}>Buy with Oneclick</button>
+            <button onClick={(event) => {addToCart(event); increaseNumberByOne(dispatchNumberOfArticles)}}    productid={item._id} className="button-buy">Add to Cart</button>
+            <button onClick={(event) => {addToOrderOneClick(event); increaseNumberByOne(dispatchNumberOfOrders)}} className="button-buy" productid={item._id}>Buy with Oneclick</button>
             </div>
           </div>
         </div>

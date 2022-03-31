@@ -105,7 +105,6 @@ export const App = () => {
         throw res;
       })
       .then((response) => {
-        console.log(response)
         setInitialStateNumber(response, dispatchNumberOfOrders)
       })
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
@@ -114,7 +113,6 @@ export const App = () => {
   function setInitialStateNumber(response, dispatch){
     for(let i= 0; i < response.length; i++){
       dispatch({type: "increment"})
-      console.log("ORDERINCREMENT")
     }
   }
 
