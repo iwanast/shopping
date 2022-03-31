@@ -1,5 +1,6 @@
 import React, {useState, useContext} from "react";
 import { AuthContext} from "../App";
+import { API_BASE_URL } from "../config"
 
 export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
 
@@ -26,7 +27,7 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
       isSubmitting: true,
       errorMessage: null
     });
-    fetch("http://localhost:7904/users/login", {
+    fetch(`${API_BASE_URL}/users/login`, {
       method: "post",
       headers: {
         "Content-Type": "application/json"

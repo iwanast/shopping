@@ -22,7 +22,6 @@ export const Nav = ({onSelectedAllProduct, allProduct}) => {
           <li>
             <Link to="/orders">Orders {stateNumberOfOrders.count > 0 ? <span className="span">{stateNumberOfOrders.count}</span> : ""}</Link>
           </li>
-
           {role === "admin" ?   <li>
             <Link to="/admin">Admin </Link>
           </li> : ""}

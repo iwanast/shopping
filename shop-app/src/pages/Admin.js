@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from  "react";
 import "./Cart.css";
+import { API_BASE_URL } from "../config"
 
 export const Admin = () => {
   const [orders, setOrders] = useState([])
@@ -7,7 +8,7 @@ export const Admin = () => {
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch(`http://localhost:7904/orders/admin/${token}`)
+    fetch(`${API_BASE_URL}/orders/admin/${token}`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -21,7 +22,7 @@ export const Admin = () => {
 function shippingDone (event) {
   event.preventDefault();
   const orderId = event.currentTarget.getAttribute("orderid");
-fetch(`http://localhost:7904/orders/update`, {
+fetch(`${API_BASE_URL}/orders/update`, {
   method: "PATCH",
   headers: {
     "Content-Type": "application/json"

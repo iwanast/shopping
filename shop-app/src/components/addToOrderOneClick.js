@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config"
+
 export  function addToOrderOneClick(event){
   event.preventDefault();
   const productId = event.target.getAttribute("productid");
@@ -5,7 +7,7 @@ export  function addToOrderOneClick(event){
   if(!token || token === undefined){
     alert("Something is wrong with your login. Please login before adding/buying items.")
   }
-  fetch(`http://localhost:7904/order/article`, {
+  fetch(`${API_BASE_URL}/order/article`, {
     method: "post",
     headers: {
       "Content-Type": "application/json"

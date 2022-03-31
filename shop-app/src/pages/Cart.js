@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from  "react";
 import {IoTrash} from "react-icons/io5"
 import { CounterNumberOfArticles } from "../App";
+import { API_BASE_URL } from "../config"
 import "./Cart.css";
 
 function endSum (articles){
@@ -18,7 +19,7 @@ export const Cart = () => {
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch(`http://localhost:7904/shopping-cart/${token}`)
+    fetch(`${API_BASE_URL}/shopping-cart/${token}`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -45,7 +46,7 @@ export const Cart = () => {
       dispatchNumberOfArticles({type: "increment"});
     }
 
-    fetch(`http://localhost:7904/shopping-cart/quantity`, {
+    fetch(`${API_BASE_URL}/shopping-cart/quantity`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -69,7 +70,7 @@ function deleteProduct (event) {
   event.preventDefault();
   const productid = event.currentTarget.getAttribute("productid");
 
-  fetch(`http://localhost:7904/shopping-cart`, {
+  fetch(`${API_BASE_URL}/shopping-cart`, {
     method: "delete",
     headers: {
       "Content-Type": "application/json"
@@ -98,7 +99,7 @@ function orderAllInCart(event){
     alert("Something is wrong with your login. Please login before adding/buying items.")
   }
 
-  fetch("http://localhost:7904/orders/post", {
+  fetch(`${API_BASE_URL}/orders/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {BiBookHeart} from "react-icons/bi";
 import {Router} from "./Router";
 import {Nav, Login, LoginForm} from "./components";
+import { API_BASE_URL } from "./config";
 import './App.css';
 
 export const AuthContext = React.createContext();
@@ -75,7 +76,7 @@ export const App = () => {
   const token = JSON.parse(localStorage.getItem("token"))
 
   useEffect(()=>{
-    fetch(`http://localhost:7904/shopping-cart/${token}`)
+    fetch(`${API_BASE_URL}/shopping-cart/${token}`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -97,7 +98,7 @@ export const App = () => {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:7904/orders/${token}`)
+    fetch(`${API_BASE_URL}/orders/${token}`)
       .then(res => {
         if (res.ok) {
           return res.json();

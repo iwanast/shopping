@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from  "react";
 import {IoTrash} from "react-icons/io5";
 import {CounterNumberOfOrders} from "../App"
+import { API_BASE_URL } from "../config"
 import "./Cart.css";
 
 export const Orders = () => {
@@ -10,7 +11,7 @@ export const Orders = () => {
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch(`http://localhost:7904/orders/${token}`)
+    fetch(`${API_BASE_URL}/orders/${token}`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -26,7 +27,7 @@ export const Orders = () => {
 function deleteProduct (event) {
   event.preventDefault();
   const orderNumber = event.currentTarget.getAttribute("ordernumber");
-fetch(`http://localhost:7904/orders`, {
+fetch(`${API_BASE_URL}/orders`, {
   method: "delete",
   headers: {
     "Content-Type": "application/json"

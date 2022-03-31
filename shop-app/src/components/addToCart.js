@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config"
+
 export  function addToCart(event){
 
   event.preventDefault();
@@ -6,7 +8,7 @@ export  function addToCart(event){
   if(!token || token === undefined){
     alert("Something is wrong with your login. Please login before adding/buying items.")
   }
-  fetch(`http://localhost:7904/shopping-cart/article`, {
+  fetch(`${API_BASE_URL}/shopping-cart/article`, {
     method: "post",
     headers: {
       "Content-Type": "application/json"

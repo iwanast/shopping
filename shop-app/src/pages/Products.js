@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import { useContext } from "react";
 import {CounterNumberOfArticles, CounterNumberOfOrders} from "../App"
 import { addToCart, addToOrderOneClick } from "../components";
-
+import { API_BASE_URL } from "../config"
 import {Search} from "../components";
 
 export const Products = ({allProduct}) => {
@@ -13,7 +13,7 @@ export const Products = ({allProduct}) => {
 
    
     useEffect(() => {
-      fetch("http://localhost:7904/products")
+      fetch(`${API_BASE_URL}/products`)
         .then((data) => data.json())
         .then((result) => {
           !result[0] ? alert("Det finns inga produkter att visas för tillfället")

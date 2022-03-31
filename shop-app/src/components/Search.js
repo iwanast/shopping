@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {IoSearchSharp} from "react-icons/io5"
-
+import { API_BASE_URL } from "../config"
 import "./Search.css";
 export const Search = ({onSelectedChange}) => {
   
@@ -9,7 +9,7 @@ export const Search = ({onSelectedChange}) => {
   useEffect(() =>{
     const timeoutId = setTimeout(() => {
       if(term){
-        fetch(`http://localhost:7904/products?author=${term}&title=${term}`)
+        fetch(`${API_BASE_URL}/products?author=${term}&title=${term}`)
         .then(response => response.json())
         .then(data => {
           onSelectedChange(data)
@@ -18,7 +18,7 @@ export const Search = ({onSelectedChange}) => {
           console.log(err.message);
         });
       } else {
-        fetch("http://localhost:7904/products")
+        fetch(`${API_BASE_URL}/products`)
         .then(response => response.json())
         .then(data => {
           onSelectedChange(data)
