@@ -2,7 +2,7 @@ import React, {useEffect, useState} from  "react";
 import {IoTrash} from "react-icons/io5"
 import "./Cart.css";
 
-export const Cart = () => {
+export const Cart = ({setNumberOfArticlesInCart}) => {
   const [articlesInCart, setArticlesInCart] = useState([])
   const [changingCart, setChangingCart] = useState(false);
 
@@ -15,9 +15,13 @@ export const Cart = () => {
         }
         throw res;
       })
-      .then((response) => setArticlesInCart(response))
+      .then((response) => {
+        setArticlesInCart(response);
+        setNumberOfArticlesInCart(response.length)
+      })
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
   }, [changingCart]);
+
 
   function endSum (articles){
     let sum = 0;

@@ -2,19 +2,14 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Products, Admin, Item, Cart, Orders } from "./pages";
 
-export const Router = ({allProduct}) => {
+export const Router = ({allProduct, setNumberOfArticlesInCart, setNumberOfOrdersInOrders}) => {
   return(
     <Routes>
-      {/* <Route path="/" element={<App /> } /> */}
-        {/* <Route path=":ageParam" element={<App /> } />
-        <Route path="" element={<App /> } /> 
-      </Route>*/}
-      <Route path="/" element={<Products allProduct={allProduct}/> } />
+      <Route path="/" element={<Products allProduct={allProduct} />} />
       <Route path="/item" element={<Item />} />
-      <Route path="/admin" element={<Admin /> } />
-      <Route path="/cart" element={<Cart /> } />
-      <Route path="/orders" element={<Orders /> } />
-      {/* <Route path="/audioplay/:id/:url/:imageurl/:title/:ageParam" element={<PlayEpisode /> } /> */}
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/cart" element={<Cart setNumberOfArticlesInCart={setNumberOfArticlesInCart} />} />
+      <Route path="/orders" element={<Orders setNumberOfOrdersInOrders={setNumberOfOrdersInOrders} />} />
       <Route 
         path="*" 
         element={
@@ -26,5 +21,3 @@ export const Router = ({allProduct}) => {
     </Routes>
   )
 }
-
-// /:id/:author/:title/:imageurl1/:imageurl2/:imageurl3/

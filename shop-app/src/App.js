@@ -40,23 +40,28 @@ const reducer = (state, action) => {
 
 export const App = () => {
   const [allProduct, setAllProduct] = useState(0);
-  // const [showsInLogin, setShowsInLogin] = useState("");
   const [isShowLogin, setIsShowLogin] = useState(false);
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [numberOfArticlesInCart, setNumberOfArticlesInCart] = useState();
+  const [numberOfOrdersInOrders, setNumberOfOrdersInOrders] = useState();
 
   return (
     <AuthContext.Provider
       value={{state, dispatch}}>
     <div className="App">
       <header>
-        <Nav onSelectedAllProduct={setAllProduct} allProduct={allProduct} />
+        <Nav onSelectedAllProduct={setAllProduct} allProduct={allProduct} numberOfArticlesInCart={numberOfArticlesInCart} numberOfOrdersInOrders={numberOfOrdersInOrders}/>
         <div className="header-title">
           <h1>Your secondhand <span className="shop-icon"><BiBookHeart /></span> shop</h1>
           <Login setIsShowLogin={setIsShowLogin} />
         </div>
       </header>
       <LoginForm isShowLogin={isShowLogin} setIsShowLogin={setIsShowLogin} />
-      <Router allProduct={allProduct} />
+      <Router 
+        allProduct={allProduct}
+        setNumberOfArticlesInCart={setNumberOfArticlesInCart} 
+        setNumberOfOrdersInOrders={setNumberOfOrdersInOrders} 
+      />
     </div>
     </AuthContext.Provider>
   );
@@ -65,8 +70,8 @@ export const App = () => {
 
 
 
-/*TODO:
-  - order the Admin orders after user
+/*TODO: 
+  - make more components (like Button) to reuse
   - separate the functions into different files
   - separate the Serverside more with different files
   - see on button Cart or Order how many you have;

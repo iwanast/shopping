@@ -204,7 +204,7 @@ app.post("/order/article", async (req, res) => {
 
   try{
     const userInfo = await collectionUsers.find({token: token}).toArray();
-    customerAdress = userInfo[0].shippingAdress;
+    const customerAdress = userInfo[0].shippingAdress;
     const articleInfo = await collectionProducts.findOne({_id : new mongodb.ObjectId(productId)})
     if(!articleInfo || articleInfo === null){
       res.sendStatus(404)

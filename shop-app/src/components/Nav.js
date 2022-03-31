@@ -1,9 +1,11 @@
-import React from  "react";
+import React, { useEffect } from  "react";
 import { Link } from "react-router-dom";
 import "./Nav.css";
 
-export const Nav = ({onSelectedAllProduct, allProduct}) => {
+export const Nav = ({onSelectedAllProduct, allProduct, numberOfOrdersInOrders, numberOfArticlesInCart}) => {
   const role = JSON.parse(localStorage.getItem("role"))
+
+  
   return(
     <>
     <div className="wrapper-nav">
@@ -12,10 +14,10 @@ export const Nav = ({onSelectedAllProduct, allProduct}) => {
             <Link to="/" onClick={() => onSelectedAllProduct(allProduct === 0 ? 1 : 0)}>Products</Link>
           </li>
           <li>
-            <Link to="/cart">Cart</Link>
+            <Link to="/cart">Cart {numberOfArticlesInCart > 0 ? <span className="span">{numberOfArticlesInCart}</span> : ""}</Link>
           </li>
           <li>
-            <Link to="/orders">Orders</Link>
+            <Link to="/orders">Orders {numberOfOrdersInOrders > 0 ? <span className="span">{numberOfOrdersInOrders}</span> : ""}</Link>
           </li>
 
           {role === "admin" ?   <li>
