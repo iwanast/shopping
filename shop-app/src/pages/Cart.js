@@ -70,8 +70,6 @@ function deleteProduct (event) {
   event.preventDefault();
   let articleQuantity = 0;
   const productid = event.currentTarget.getAttribute("productid");
-  console.log("PRODUCTID:", productid)
-  console.log("ARTICLES IN CART" ,articlesInCart)
 
   articlesInCart.forEach(article => {
         if(article._id === productid){
@@ -105,7 +103,11 @@ function deleteProduct (event) {
   
 function orderAllInCart(event){
   event.preventDefault();
+  let articlesQuantity = 0;
 
+  articlesInCart.forEach(article => {
+    articlesQuantity += article.quantity
+  });
   const token = JSON.parse(localStorage.getItem("token"))
   if(!token || token === undefined){
     alert("Something is wrong with your login. Please login before adding/buying items.")
@@ -122,6 +124,9 @@ function orderAllInCart(event){
   .then(res => {
     if (res.ok){
     setChangingCart(!changingCart)
+    for(let i = 0; i < articlesQuantity; i++){
+      dispatchNumberOfArticles({type: "decrement"});
+    }
     } else if(res.status === 404){
       alert("Feel free to selecte products first.")
     }

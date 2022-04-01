@@ -28,22 +28,6 @@ function deleteProduct (event) {
   event.preventDefault();
   const orderId = event.currentTarget.getAttribute("orderid");
 
-  // fetch(`${API_BASE_URL}/orders/order/${orderId}`)
-  // .then(res => {
-  //   if (res.ok) {
-  //     return res.json();
-  //   }
-  //   throw res;
-  // })
-  // .then((response) => {
-  //   console.log("RESPONS: ",response)
-  //   console.log(response.articles)
-  //   response.articles.forEach((article)=> {
-  //     for(let i= 0; i <= article.quantity; i++)
-  //     dispatchNumberOfOrders({type: "decrement"});
-  //   })
-  // })
-
   fetch(`${API_BASE_URL}/orders`, {
     method: "delete",
     headers: {
@@ -63,6 +47,7 @@ function deleteProduct (event) {
   })
   .catch((err) => {
     console.log(err.message);
+    dispatchNumberOfOrders({type: "decrement"});
   });
 }
 
@@ -118,3 +103,20 @@ function calcPrice(orders) {
     </div>
   )
 };
+
+
+  // fetch(`${API_BASE_URL}/orders/order/${orderId}`)
+  // .then(res => {
+  //   if (res.ok) {
+  //     return res.json();
+  //   }
+  //   throw res;
+  // })
+  // .then((response) => {
+  //   console.log("RESPONS: ",response)
+  //   console.log(response.articles)
+  //   response.articles.forEach((article)=> {
+  //     for(let i= 0; i <= article.quantity; i++)
+  //     dispatchNumberOfOrders({type: "decrement"});
+  //   })
+  // })
