@@ -1,1 +1,1 @@
-export const API_BASE_URL = "https://project-data-interaction-app.herokuapp.com" || "http://localhost:7904" 
+export const API_BASE_URL = "https://project-data-interaction-app.herokuapp.com" // "http://localhost:7904" 

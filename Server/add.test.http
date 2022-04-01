@@ -105,5 +105,11 @@ DELETE  http://localhost:7904/orders
 Content-Type: application/json
 
 {
-  "orderNumber": "111"
+  "_id": "624707933ba9aff9cfc07bd3"
 }
+
+### GET THE ORDERS
+
+GET http://localhost:7904/orders/order/6244b4aa4ce71c3f46d8d830
+
+

@@ -61,7 +61,8 @@ async function createNewOrderNumber(customersId){
     if(existingOrderWithHighestNumber.length === 0 || !existingOrderWithHighestNumber){
       return 110;
     } else {
-      return existingOrderWithHighestNumber[0].orderNumber + 1;
+      const existingHighestOrdernumber = parseInt(existingOrderWithHighestNumber[0].orderNumber);
+      return existingHighestOrdernumber + 1;
     }
   }catch{
     res.sendStatus(500)
@@ -104,6 +105,21 @@ app.get("/shopping-cart/:token", async (req, res) =>{
   }
 });
 
+app.get("/orders/:token", async (req, res) =>{
+  const tokenUser = req.params.token;
+  const userId =  await tokenValidating(tokenUser);
+  if (userId === 0){
+    return res.sendStatus(401)
+  }
+
+  try{
+    const orders = await collectionOrders.find({customersId: userId}).toArray();
+    res.json(orders);
+  }catch {
+    res.sendStatus(500)
+  }
+});
+
 app.get("/orders/order/:orderId", async (req, res) =>{
   const orderId = req.params.orderId;
   console.log(orderId)
@@ -136,20 +152,7 @@ app.get("/orders/admin/:token", async (req,res) => {
   }
 });
 
-app.get("/orders/:token", async (req, res) =>{
-  const tokenUser = req.params.token;
-  const userId =  await tokenValidating(tokenUser);
-  if (userId === 0){
-    return res.sendStatus(401)
-  }
 
-  try{
-    const orders = await collectionOrders.find({customersId: userId}).toArray();
-    res.json(orders);
-  }catch {
-    res.sendStatus(500)
-  }
-});
 
 app.post("/products", async (req, res) => {
   const insertItem = req.body;
@@ -327,7 +330,7 @@ app.post("/users", async (req, res) => {
 });
 
 app.delete("/shopping-cart", async (req, res) => {
-
+  
   const productId = req.body.productId
   try{
       await collectionCart.deleteOne({_id : new mongodb.ObjectId(productId)})
@@ -339,8 +342,9 @@ app.delete("/shopping-cart", async (req, res) => {
 });
 
 app.delete("/orders", async (req, res) => {
-
-  const orderId = parseInt(req.body.orderId);
+  console.log("IN DELETE REQUEST")
+  const orderId = req.body.orderId
+  console.log("ORDERID: ", typeof(orderId), orderId)
   try{
       await collectionOrders.deleteOne({_id : new mongodb.ObjectId(orderId)})
       res.status(200).end();

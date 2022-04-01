@@ -26,26 +26,44 @@ export const Orders = () => {
 
 function deleteProduct (event) {
   event.preventDefault();
-  const orderNumber = event.currentTarget.getAttribute("ordernumber");
-fetch(`${API_BASE_URL}/orders`, {
-  method: "delete",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    orderNumber: orderNumber
+  const orderId = event.currentTarget.getAttribute("orderid");
+
+  // fetch(`${API_BASE_URL}/orders/order/${orderId}`)
+  // .then(res => {
+  //   if (res.ok) {
+  //     return res.json();
+  //   }
+  //   throw res;
+  // })
+  // .then((response) => {
+  //   console.log("RESPONS: ",response)
+  //   console.log(response.articles)
+  //   response.articles.forEach((article)=> {
+  //     for(let i= 0; i <= article.quantity; i++)
+  //     dispatchNumberOfOrders({type: "decrement"});
+  //   })
+  // })
+
+  fetch(`${API_BASE_URL}/orders`, {
+    method: "delete",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      orderId: orderId
+    })
   })
-})
-.then(res => {
-  if (res.ok){
-  setChangingOrder(!changingOrder)
-  dispatchNumberOfOrders({type: "decrement"});
-  }
-throw res;
-})
-.catch((err) => {
-  console.log(err.message);
-});
+  .then(res => {
+    if (res.ok){
+      console.log("RES OK")
+      console.log("ORDERID: ", orderId)
+    setChangingOrder(!changingOrder)
+    }
+  throw res;
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
 }
 
 function calcPrice(orders) {
@@ -80,7 +98,7 @@ function calcPrice(orders) {
                       { order.articles && (
                       order.articles.map(article => (
                         <li key={article.articleId}>
-                          {article.title}
+                          {article.title} {article.quantity > 1 ? <span className="text-smaller">{`(${article.quantity})`}</span> : ""}
                         </li>
                       )))}
                     </ul>
@@ -88,7 +106,7 @@ function calcPrice(orders) {
                   <td width="15%" className="text-center">{calcPrice(order.articles)}</td>
                   <td width="15%" className="text-center">{order.status}</td>
                   <td width="10%">
-                  {order.status === "ordered" ? <button type="button" onClick={deleteProduct} ordernumber={order.orderNumber} className="btn btn-danger btn-sm">  <IoTrash /></button> : "" } 
+                  {order.status === "ordered" ? <button type="button" onClick={deleteProduct} orderid={order._id} className="btn btn-danger btn-sm">  <IoTrash /></button> : "" } 
                   </td>
                 </tr>
               ))

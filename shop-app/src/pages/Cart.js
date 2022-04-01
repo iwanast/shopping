@@ -68,7 +68,17 @@ export const Cart = () => {
 
 function deleteProduct (event) {
   event.preventDefault();
+  let articleQuantity = 0;
   const productid = event.currentTarget.getAttribute("productid");
+  console.log("PRODUCTID:", productid)
+  console.log("ARTICLES IN CART" ,articlesInCart)
+
+  articlesInCart.forEach(article => {
+        if(article._id === productid){
+          articleQuantity = article.quantity
+          console.log("ARTICLEQUANTITY", typeof(articleQuantity), articleQuantity)
+        }
+  });
 
   fetch(`${API_BASE_URL}/shopping-cart`, {
     method: "delete",
@@ -82,7 +92,9 @@ function deleteProduct (event) {
   .then(res => {
     if (res.ok){
     setChangingCart(!changingCart)
-    dispatchNumberOfArticles({type: "decrement"});
+    for(let i = 0; i < articleQuantity; i++){
+      dispatchNumberOfArticles({type: "decrement"});
+    }
     }
   throw res;
   })
