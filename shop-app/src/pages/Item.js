@@ -24,6 +24,10 @@ export const Item = () => {
   };
 
   function increaseNumberByOne(dispatch){
+    const token = JSON.parse(localStorage.getItem("token"))
+    if(!token || token === undefined){
+      return
+    }
     dispatch({type: "increment"});
   }
 
