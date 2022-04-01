@@ -68,10 +68,6 @@ async function createNewOrderNumber(customersId){
   }
 }
 
-async function findAProduct(filter){
-
-}
-
 /////////////////////////////////////////////METHODS/////////////////////////////////////////////////////
 app.get("/products", async (req, res) => {
 
@@ -108,20 +104,18 @@ app.get("/shopping-cart/:token", async (req, res) =>{
   }
 });
 
-app.get("/orders/:token", async (req, res) =>{
-  const tokenUser = req.params.token;
-  const userId =  await tokenValidating(tokenUser);
-  if (userId === 0){
-    return res.sendStatus(401)
-  }
-
+app.get("/orders/order/:orderId", async (req, res) =>{
+  const orderId = req.params.orderId;
+  console.log(orderId)
   try{
-    const orders = await collectionOrders.find({customersId: userId}).toArray();
-    res.json(orders);
+    const order = await collectionOrders.findOne({_id : new mongodb.ObjectId(orderId)});
+    res.json(order);
+    console.log(order)
   }catch {
     res.sendStatus(500)
   }
 });
+
 
 app.get("/orders/admin/:token", async (req,res) => {
   const tokenUser = req.params.token;
@@ -142,6 +136,20 @@ app.get("/orders/admin/:token", async (req,res) => {
   }
 });
 
+app.get("/orders/:token", async (req, res) =>{
+  const tokenUser = req.params.token;
+  const userId =  await tokenValidating(tokenUser);
+  if (userId === 0){
+    return res.sendStatus(401)
+  }
+
+  try{
+    const orders = await collectionOrders.find({customersId: userId}).toArray();
+    res.json(orders);
+  }catch {
+    res.sendStatus(500)
+  }
+});
 
 app.post("/products", async (req, res) => {
   const insertItem = req.body;
@@ -237,7 +245,6 @@ app.post("/order/article", async (req, res) => {
 });
 
 app.post("/orders/post", async (req, res) => {
-  // const insertItem = req.body;
   const tokenUser = req.body.token;
   let customerAdress = {};
   let insertOrder = {};
@@ -333,9 +340,9 @@ app.delete("/shopping-cart", async (req, res) => {
 
 app.delete("/orders", async (req, res) => {
 
-  const orderNumber = parseInt(req.body.orderNumber);
+  const orderId = parseInt(req.body.orderId);
   try{
-      await collectionOrders.deleteOne({orderNumber : orderNumber})
+      await collectionOrders.deleteOne({_id : new mongodb.ObjectId(orderId)})
       res.status(200).end();
   }catch (error){
     console.log(error);
