@@ -3,7 +3,8 @@ import mongodb from "mongodb";
 import cors from "cors";
 
 // mongoDB set-up
-const mongoClient = new mongodb.MongoClient("mongodb://localhost:27017");
+const MONGODB_URL = process.env.MONGODB_URL || "mongodb://localhost:27017"
+const mongoClient = new mongodb.MongoClient(MONGODB_URL);
 mongoClient.connect();
 const db = mongoClient.db("Project-data-interaction");
 const collectionProducts = db.collection("products");
@@ -14,12 +15,13 @@ const collectionUsers = db.collection("users");
 
 //API set-up
 const app = express(); 
-const PORT = 7904; 
+const PORT = process.env.PORT || 7904; 
 app.use(express.json());
 app.use(
-  cors({origin: "http://localhost:3000"})
+  cors({origin: "*"})
   );
-app.use(express.static("public"));
+app.use(express.static("./public"));
+
 
 ////////////////////////////////////FUNCTIONS/////////////////////////////////////////
 async function generateAuthToken(){
@@ -120,6 +122,7 @@ app.get("/orders/:token", async (req, res) =>{
   }
 });
 
+//NOT IN USE FOR NOW START
 app.get("/orders/order/:orderId", async (req, res) =>{
   const orderId = req.params.orderId;
   console.log(orderId)
@@ -131,7 +134,7 @@ app.get("/orders/order/:orderId", async (req, res) =>{
     res.sendStatus(500)
   }
 });
-
+// NOT IN USE FOR NOW END
 
 app.get("/orders/admin/:token", async (req,res) => {
   const tokenUser = req.params.token;
@@ -151,8 +154,6 @@ app.get("/orders/admin/:token", async (req,res) => {
     res.sendStatus(500)
   }
 });
-
-
 
 app.post("/products", async (req, res) => {
   const insertItem = req.body;
@@ -174,7 +175,7 @@ app.post("/shopping-cart/article", async (req, res) => {
   try{
     const articleInfo = await collectionProducts.findOne({_id : new mongodb.ObjectId(productId)})
     if(!articleInfo || articleInfo === null){
-      res.sendStatus(404)
+      return res.sendStatus(404)
     }
     const articleExistInCart = await collectionCart.findOne({$and: [{customersId : userId}, { "article.articleId": new mongodb.ObjectId(productId)}]})
     if(articleExistInCart){
@@ -330,7 +331,7 @@ app.post("/users", async (req, res) => {
 });
 
 app.delete("/shopping-cart", async (req, res) => {
-  
+
   const productId = req.body.productId
   try{
       await collectionCart.deleteOne({_id : new mongodb.ObjectId(productId)})
@@ -342,9 +343,7 @@ app.delete("/shopping-cart", async (req, res) => {
 });
 
 app.delete("/orders", async (req, res) => {
-  console.log("IN DELETE REQUEST")
   const orderId = req.body.orderId
-  console.log("ORDERID: ", typeof(orderId), orderId)
   try{
       await collectionOrders.deleteOne({_id : new mongodb.ObjectId(orderId)})
       res.status(200).end();

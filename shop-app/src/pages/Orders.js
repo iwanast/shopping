@@ -82,7 +82,7 @@ function calcPrice(orders) {
                     <ul>
                       { order.articles && (
                       order.articles.map(article => (
-                        <li key={article.articleId}>
+                        <li key={article.articleId} className="text-left">
                           {article.title} {article.quantity > 1 ? <span className="text-smaller">{`(${article.quantity})`}</span> : ""}
                         </li>
                       )))}

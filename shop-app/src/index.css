@@ -10,6 +10,9 @@ body {
   /* list-style: none;
   text-decoration: none; */
 }
+main{
+  width: 100vw;
+}
 
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -87,4 +90,7 @@ ul{
 .product-description{
   font-size: .9rem;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.text-left{
+  text-align: left;
 }
