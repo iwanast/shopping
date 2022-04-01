@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from  "react";
 import {IoTrash} from "react-icons/io5"
-import { CounterNumberOfArticles } from "../App";
+import {CounterNumberOfArticles, CounterNumberOfOrders} from "../App"
 import { API_BASE_URL } from "../config"
 import "./Cart.css";
 
@@ -16,6 +16,7 @@ export const Cart = () => {
   const [articlesInCart, setArticlesInCart] = useState([])
   const [changingCart, setChangingCart] = useState(false);
   const {dispatchNumberOfArticles} = useContext(CounterNumberOfArticles);
+  const {dispatchNumberOfOrders} = useContext(CounterNumberOfOrders)
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"))
@@ -124,6 +125,7 @@ function orderAllInCart(event){
   .then(res => {
     if (res.ok){
     setChangingCart(!changingCart)
+    dispatchNumberOfOrders({type: "increment"});
     for(let i = 0; i < articlesQuantity; i++){
       dispatchNumberOfArticles({type: "decrement"});
     }

@@ -2,22 +2,31 @@
   position: relative;
   text-decoration: none;
   display: inline-block;
-  width: 400px;
-  padding: 8px 16px 48px 8px;
+  width: 340px;
+  padding: 8px 16px 48px;
   background-color: aliceblue;
   border-radius: 10px;
   border: solid 1px #b36b00;
   color: rgb(32, 32, 32);
   margin: auto;
 }
-
+@media screen and (max-width: 350px) {
+  .wrapper-item {
+    width: 280px;
+  }
+}
 .wrapper-item img{
-  width: 380px;
+  width: 320px;
+  height: 320px;
   padding: 8px;
   object-fit: scale-down;
-  
 }
-
+@media screen and (max-width: 350px) {
+  .wrapper-item img{
+    width: 260px;
+    height: 280px;
+  }
+}
 .wrapper-button-picture-slide{
   padding: 8px;
   display: flex;

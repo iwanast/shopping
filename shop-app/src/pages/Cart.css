@@ -14,13 +14,11 @@
   display: flex;
   justify-content: flex-start;
 }
-
 .wrapper-cart-article img{
   width: 40px;
   height: 40px;
   object-fit: scale-down;
 }
-
 .table-responsive{
   position: relative;
 }
@@ -31,7 +29,6 @@
   background-color: aliceblue;
   margin:auto;
 }
-
 tbody{
   margin: 16px;
   padding: 8px 16px;
@@ -39,7 +36,6 @@ tbody{
   border-radius: 10px;
   /* border: solid 1px rgb(179, 107, 0); */
 }
-
 .table-fix{
   background-color: rgb(10, 80, 142);
   color:white;
@@ -47,11 +43,9 @@ tbody{
 th{
   padding: 8px;
 }
-
 .button-order{
   padding: 8px 16px;
 }
-
 .wrapper-button-quantity{
   display: flex;
   justify-content: center;

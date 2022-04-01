@@ -20,7 +20,6 @@
 .wrapper-nav li{
   display: flex;
   justify-content: flex-start;
-  /* align-content: center; */
 }
 .wrapper-nav li a {
   text-decoration: none;
@@ -29,9 +28,7 @@
   border-radius: 3px;
   padding: 4px 24px;
   margin: 0 8px;
-  
 }
-
 .wrapper-nav li a:hover{
   background-color: rgb(8, 24, 116);
   color: white;
