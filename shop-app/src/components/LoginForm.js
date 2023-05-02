@@ -6,9 +6,9 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
 
   const {dispatch} = useContext(AuthContext)
   const initialState = {
-    name: "",
-    email: "",
-    password: "",
+    name: "Visitor",
+    email: "user@user.com",
+    password: "visitor",
     isSubmitting: false,
     errorMessage: null
   };
@@ -68,7 +68,7 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
             <label className="margin">Name</label><br></br>
             <input
               type="text"
-              value="Visitor" //{data.name}
+              value={data.name}
               onChange={handleInputChange}
               name="name"
               id="name"
@@ -78,7 +78,7 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
             <label className="margin">Email Adress</label><br></br>
             <input
               type="text"
-              value="user@user.com" //{data.name}
+              value={data.name}
               onChange={handleInputChange}
               name="email"
               id="email"
@@ -88,7 +88,7 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
             <label className="margin">Password</label><br></br>
             <input
               type="password"
-              value="visitor" // {data.password}
+              value={data.password}
               onChange={handleInputChange}
               name="password"
               id="password"
