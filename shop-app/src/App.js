@@ -48,6 +48,8 @@ function reducerNumberOfArticles (stateNumberOfArticles, action) {
       return {count: stateNumberOfArticles.count + 1};
     case "decrement":
       return {count: stateNumberOfArticles.count - 1};
+    case "initialState":
+      return {count: 0};
     default:
       throw new Error();
   }
@@ -61,6 +63,8 @@ function reducerNumberOfOrders (stateNumberOfOrders, action) {
       return {count: stateNumberOfOrders.count + 1};
     case "decrement":
       return {count: stateNumberOfOrders.count - 1};
+    case "initialState":
+      return {count: 0};
     default:
       throw new Error();
   }
@@ -87,7 +91,7 @@ export const App = () => {
         setInitialStateNumberArticles(response, dispatchNumberOfArticles)
       })
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
-  }, [])
+  }, [state])
 
   function setInitialStateNumberArticles(response, dispatch){
     response.forEach(element => {
@@ -109,7 +113,14 @@ export const App = () => {
         setInitialStateNumber(response, dispatchNumberOfOrders)
       })
       .catch((error) => console.log("Something went wrong with fetching the data: ", error))
-  }, []);
+  }, [state]);
+
+  useEffect(() => {
+    if(state.user === null){
+      dispatchNumberOfArticles({type: "initialState"});
+      dispatchNumberOfOrders({type: "initialState"})
+    }
+  }, [state])
 
   function setInitialStateNumber(response, dispatch){
     for(let i= 0; i < response.length; i++){
