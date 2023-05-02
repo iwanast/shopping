@@ -1,6 +1,9 @@
 Hyper Island - Data interaction
 
-If you want to check it out online, visit https://shopping-secondhand-bookshop.netlify.app/ and login with the e-mail admin@myshop.se and the password admin.  
+If you want to check it out online, visit https://shopping-secondhand-bookshop.netlify.app/ and login with the default (Visitor) as a user or as the admin and then you need the following credentials: 
+name: admin
+e-mail admin@myshop.se
+password admin
 
 📂 The Brief: Create an API with MongoDB and Express for a shopping store online where
 - there is at least one way for customers to interact with their new API
