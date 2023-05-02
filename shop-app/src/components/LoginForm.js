@@ -78,7 +78,7 @@ export const LoginForm = ({isShowLogin, setIsShowLogin}) => {
             <label className="margin">Email Adress</label><br></br>
             <input
               type="text"
-              value={data.name}
+              value={data.email}
               onChange={handleInputChange}
               name="email"
               id="email"
